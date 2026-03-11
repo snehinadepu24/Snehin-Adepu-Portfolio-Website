@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snehin Adepu | Engineering Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0f1c;
+            --bg-secondary: #111827;
+            --accent-gold: #d4af37;
+            --accent-blue: #2563eb;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Premium Customizations ── */
+        ::selection {
+            background: rgba(212, 175, 55, 0.25);
+            color: var(--text-primary);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.5);
+        }
+
+        /* ── Professional Nav ── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10, 15, 28, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav.scrolled {
+            padding: 0.6rem 6%;
+            background: rgba(10, 15, 28, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .scroll-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            padding: 5rem 10%;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* Tall scroll container — user scrolls through this to scrub the video */
+        .hero-scroll-container {
+            position: relative;
+            /* 3× viewport = plenty of scroll runway for the video */
+            height: 300vh;
+        }
+
+        .hero {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 5rem;
+            overflow: hidden;
+            padding: 0 10%;
+        }
+
+        .hero-content {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            text-align: left;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            transform: translateZ(50px);
+        }
+
+        .hero .title {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: var(--accent-blue);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            transform: translateZ(30px);
+        }
+
+        .hero .tagline {
+            max-width: 600px;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            transform: translateZ(20px);
+        }
+
+        /* ── Circular Video Container ── */
+        .video-circle-wrapper {
+            position: relative;
+            flex-shrink: 0;
+            width: clamp(200px, 22vw, 320px);
+            height: clamp(200px, 22vw, 320px);
+            z-index: 20;
+        }
+
+        .video-circle-border {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg,
+                    var(--accent-gold),
+                    var(--accent-blue),
+                    var(--accent-gold),
+                    var(--accent-blue),
+                    var(--accent-gold));
+            animation: borderSpin 6s linear infinite;
+            filter: blur(1px);
+        }
+
+        @keyframes borderSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .video-circle-glow {
+            position: absolute;
+            inset: -18px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                    rgba(212, 175, 55, 0.25) 0%,
+                    rgba(37, 99, 235, 0.12) 40%,
+                    transparent 70%);
+            animation: glowPulse 3s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1.08);
+            }
+        }
+
+        .video-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        .video-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Scroll-progress ring that traces as you scroll */
+        .video-progress-ring {
+            position: absolute;
+            inset: -8px;
+            pointer-events: none;
+        }
+
+        .video-progress-ring circle {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.15s ease-out;
+        }
+
+        .video-progress-ring .ring-track {
+            stroke: rgba(255, 255, 255, 0.06);
+        }
+
+        .video-progress-ring .ring-fill {
+            stroke: url(#progressGradient);
+        }
+
+        /* Responsive: stack on mobile */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                gap: 2.5rem;
+                text-align: center;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .video-circle-wrapper {
+                width: 180px;
+                height: 180px;
+                order: -1;
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-gold);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .about-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2rem 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-box:hover::before {
+            opacity: 1;
+        }
+
+        .stat-box:hover {
+            border-color: rgba(212, 175, 55, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(212, 175, 55, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-gold), #f5c842);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .skills-tunnel {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .skill-category:hover::before {
+            opacity: 1;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--accent-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .skill-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            padding: 0.45rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .skill-tag:hover {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--accent-gold);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .experience-timeline {
+            width: 100%;
+            max-width: 900px;
+            margin: 3rem auto 0;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, var(--accent-gold), var(--accent-blue));
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5), 0 0 20px rgba(37, 99, 235, 0.5);
+            transition: height 0.15s ease-out;
+        }
+
+        .timeline-item {
+            padding-left: 4.5rem;
+            margin-bottom: 3.5rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            /* Fixes text overlap */
+        }
+
+        .timeline-item.visible {
+            opacity: 0.4;
+            transform: translateY(0);
+            filter: grayscale(0.6);
+        }
+
+        .timeline-item.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: grayscale(0);
+        }
+
+        .timeline-content {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+
+        .timeline-item.active .timeline-content {
+            transform: scale(1.05);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 17px;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--bg-primary);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .timeline-dot.active {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8), 0 0 30px rgba(212, 175, 55, 0.4);
+            transform: scale(1.3);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+        }
+
+        .timeline-date {
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        .projects-showcase {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            align-items: stretch;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-gold), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.025);
+            transform: translateY(-3px);
+        }
+
+        .project-icon-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem 1.5rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+        }
+
+        .project-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .project-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .project-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .project-icon--email {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03));
+            color: var(--accent-gold);
+        }
+
+        .project-icon--iot {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.03));
+            color: #10b981;
+        }
+
+        .project-icon--security {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.05));
+            color: #ef4444;
+        }
+
+        .project-body {
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-body h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .project-tech span {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-tech span {
+            border-color: rgba(212, 175, 55, 0.15);
+            color: rgba(212, 175, 55, 0.8);
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            line-height: 1.75;
+            font-size: 0.92rem;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .project-stat svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        .project-stat strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .project-card {
+                grid-template-columns: 1fr;
+            }
+
+            .project-icon-panel {
+                flex-direction: row;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                padding: 1.2rem 1.5rem;
+            }
+
+            .project-body {
+                padding: 1.5rem;
+            }
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .achievement-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .achievement-type {
+            color: var(--accent-blue);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .achievement-title {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .achievement-context {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 10% 2rem 10%;
+        }
+
+        .contact-section .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .profile-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+
+        .profile-glow {
+            position: absolute;
+            inset: -15px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-blue));
+            border-radius: 50%;
+            filter: blur(25px);
+            opacity: 0.35;
+            animation: pulseGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                opacity: 0.25;
+                transform: scale(0.95);
+            }
+
+            100% {
+                opacity: 0.45;
+                transform: scale(1.05);
+            }
+        }
+
+        .profile-img-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            padding: 3px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5), rgba(37, 99, 235, 0.5));
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-primary);
+            border: 4px solid var(--bg-primary);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            color: var(--accent-gold);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.01em;
+        }
+
+        .contact-btn:hover {
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .contact-btn.primary {
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            border-color: transparent;
+            color: white;
+        }
+
+        .contact-btn.primary:hover {
+            background: linear-gradient(135deg, #3b82f6, var(--accent-blue));
+            border-color: transparent;
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer span {
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 968px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .project-card {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 0 5%;
+            }
+        }
+
+        /* ── Floating Contact Button ── */
+        .floating-contact {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .floating-contact-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .floating-contact:hover .floating-contact-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .floating-contact-toggle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .floating-contact:hover .floating-contact-toggle {
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, var(--accent-gold), #f5c842);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .floating-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(10, 15, 28, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .floating-icon:hover {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--accent-gold);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
+        }
+
+        .floating-contact-tooltip {
+            position: absolute;
+            right: 56px;
+            background: rgba(10, 15, 28, 0.9);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.02em;
+        }
+
+        .floating-icon:hover .floating-contact-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Contact Speed Dial -->
+    <div class="floating-contact" id="floatingContact">
+        <div class="floating-contact-menu">
+            <a href="mailto:adepu.snehin@gmail.com" class="floating-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <span class="floating-contact-tooltip">Email Me</span>
+            </a>
+            <a href="https://github.com/snehinadepu24" target="_blank" class="floating-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                <span class="floating-contact-tooltip">GitHub</span>
+            </a>
+            <a href="https://linkedin.com/in/snehin-adepu" target="_blank" class="floating-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+                <span class="floating-contact-tooltip">LinkedIn</span>
+            </a>
+            <a href="tel:+918309067253" class="floating-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span class="floating-contact-tooltip">Call Me</span>
+            </a>
+        </div>
+        <button class="floating-contact-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Professional Navigation -->
+    <nav class="nav" id="mainNav">
+        <a href="#hero" class="nav-logo">Snehin <span>Adepu</span></a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="canvas-container"></div>
+
+    <div class="scroll-content">
+        <div class="hero-scroll-container" id="heroScrollContainer">
+            <section class="hero" id="hero">
+
+                <!-- Circular Video -->
+                <div class="video-circle-wrapper" id="videoWrapper">
+                    <div class="video-circle-glow"></div>
+                    <div class="video-circle-border"></div>
+                    <div class="video-circle">
+                        <img id="frameDisplay" src="/frames/frame_0001.jpg" alt="Snehin waving" />
+                    </div>
+                    <!-- SVG progress ring -->
+                    <svg class="video-progress-ring" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--accent-gold)" />
+                                <stop offset="100%" stop-color="var(--accent-blue)" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="ring-track" cx="50" cy="50" r="48" />
+                        <circle class="ring-fill" id="progressRing" cx="50" cy="50" r="48" stroke-dasharray="301.6"
+                            stroke-dashoffset="301.6" />
+                    </svg>
+                </div>
+
+                <div class="hero-content">
+                    <h1>Snehin Adepu</h1>
+                    <div class="title">AI/ML Engineer & Backend Architect</div>
+                    <p class="tagline">
+                        Engineering intelligent systems at the intersection of artificial intelligence and scalable
+                        infrastructure.
+                        Specializing in optimizing LLM pipelines, cloud-native architectures, and data-driven solutions.
+                    </p>
+                </div>
+                <div class="scroll-indicator">Scroll to Explore</div>
+            </section>
+        </div>
+
+        <section id="about">
+            <div class="about-grid">
+                <div>
+                    <span class="section-label">About</span>
+                    <h2 class="section-title">Architecting the Future</h2>
+                    <p class="about-text">
+                        I'm a Computer Science Engineering student specializing in AI & ML, with a proven track record
+                        of reducing system costs by 70% and achieving 99.03% accuracy in security implementations. My
+                        work bridges the gap between theoretical AI research and production-ready backend systems.
+                    </p>
+                    <p class="about-text" style="margin-top: 1.5rem;">
+                        From designing IoT irrigation systems that conserve 57% water to presenting research at
+                        international conferences, I approach every challenge with analytical precision and creative
+                        problem-solving.
+                    </p>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-number">8.55</span>
+                        <div class="stat-label">CGPA</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">70%</span>
+                        <div class="stat-label">Cost Reduction</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">99.03%</span>
+                        <div class="stat-label">Detection Rate</div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">57%</span>
+                        <div class="stat-label">Resource Saved</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div style="width: 100%;">
+                <span class="section-label">Capabilities</span>
+                <h2 class="section-title">Technical Arsenal</h2>
+
+                <div class="skills-tunnel">
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">Core Technologies</div>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">C</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">FastAPI</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">React</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="color: #60a5fa;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">Cloud & Infrastructure</div>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">GCP</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Terraform</span>
+                            <span class="skill-tag">CI/CD</span>
+                            <span class="skill-tag">PostgreSQL</span>
+                            <span class="skill-tag">Supabase</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="color: #10b981;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="4" />
+                                    <path d="M10 8h4" />
+                                    <path d="M12 12v4" />
+                                    <path d="M8 12h8" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">AI & Machine Learning</div>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">CNNs</span>
+                            <span class="skill-tag">XGBoost</span>
+                            <span class="skill-tag">Prompt Engineering</span>
+                            <span class="skill-tag">LLM Optimization</span>
+                            <span class="skill-tag">Model Benchmarking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div style="width: 100%; max-width: 900px; margin: 0 auto;">
+                <span class="section-label">Journey</span>
+                <h2 class="section-title">Professional Experience</h2>
+
+                <div class="experience-timeline" id="expTimeline">
+                    <div class="timeline-line">
+                        <div class="timeline-progress" id="expProgress"></div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">May 2025 – Nov 2025</div>
+                            <div class="timeline-title">AIML & Backend Intern</div>
+                            <div class="timeline-company">Loomylabs</div>
+                            <div class="timeline-desc">
+                                Architected backend systems achieving 70% LLM inference cost reduction through optimized
+                                prompting pipelines. Deployed production services on GCP with complete CI/CD
+                                infrastructure,
+                                managing PostgreSQL schemas and load testing for 1000+ concurrent users.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">June 2025 – Dec 2025</div>
+                            <div class="timeline-title">AI Transformative Learning Intern</div>
+                            <div class="timeline-company">AICTE TechSaksham (Microsoft & SAP)</div>
+                            <div class="timeline-desc">
+                                Selected for prestigious national internship program. Developed production-ready AI
+                                applications
+                                through structured learning modules, focusing on enterprise-scale AI implementation and
+                                cloud
+                                integration.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024</div>
+                            <div class="timeline-title">Project Intern</div>
+                            <div class="timeline-company">Alfago Research LLP</div>
+                            <div class="timeline-desc">
+                                Engineered high-frequency data pipeline processing OHLCV market data with 5-minute
+                                intervals.
+                                Implemented AWS cloud storage using Parquet format for analytical efficiency and
+                                real-time
+                                aggregation systems.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="projects-showcase">
+                <span class="section-label">Portfolio</span>
+                <h2 class="section-title">Featured Projects</h2>
+
+                <div class="projects-grid">
+
+                    <!-- Project 01 -->
+                    <div class="project-card">
+                        <div class="project-icon-panel">
+                            <span class="project-number">01</span>
+                            <div class="project-icon project-icon--email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <h3>Enterprise SMTP Infrastructure</h3>
+                            <div class="project-tech">
+                                <span>Node.js</span>
+                                <span>React</span>
+                                <span>Supabase</span>
+                                <span>Nodemailer</span>
+                            </div>
+                            <p class="project-desc">
+                                Production-grade email delivery system with intelligent retry logic, real-time delivery
+                                tracking, and comprehensive analytics dashboard. Features sub-second latency monitoring
+                                and
+                                automated failover mechanisms.
+                            </p>
+                            <div class="project-meta">
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                    <span>Real-time tracking</span>
+                                </div>
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
+                                    <span><strong>&lt;1s</strong> latency</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 02 -->
+                    <div class="project-card">
+                        <div class="project-icon-panel">
+                            <span class="project-number">02</span>
+                            <div class="project-icon project-icon--iot">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <h3>Smart IoT Irrigation Controller</h3>
+                            <div class="project-tech">
+                                <span>Arduino</span>
+                                <span>IoT Sensors</span>
+                                <span>Automation</span>
+                                <span>C++</span>
+                            </div>
+                            <p class="project-desc">
+                                Precision agriculture system utilizing hexagonal moisture sensor arrays and
+                                geometric-depth
+                                sensing algorithms. Achieved 57% water conservation through ML-driven predictive
+                                irrigation
+                                scheduling.
+                            </p>
+                            <div class="project-meta">
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                    <span><strong>57%</strong> water saved</span>
+                                </div>
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect width="18" height="18" x="3" y="3" rx="2" />
+                                        <path d="M3 9h18" />
+                                        <path d="M9 21V9" />
+                                    </svg>
+                                    <span>Published research</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 03 -->
+                    <div class="project-card">
+                        <div class="project-icon-panel">
+                            <span class="project-number">03</span>
+                            <div class="project-icon project-icon--security">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    <path d="m9 12 2 2 4-4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <h3>Hybrid DDoS Detection System</h3>
+                            <div class="project-tech">
+                                <span>XGBoost</span>
+                                <span>CNN</span>
+                                <span>Network Security</span>
+                                <span>Python</span>
+                            </div>
+                            <p class="project-desc">
+                                Research-grade intrusion detection system combining XGBoost and CNN architectures for
+                                IoT
+                                networks. Published research achieving 99.03% detection accuracy with automated firewall
+                                mitigation protocols.
+                            </p>
+                            <div class="project-meta">
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
+                                    <span><strong>99.03%</strong> accuracy</span>
+                                </div>
+                                <div class="project-stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                                    </svg>
+                                    <span>Conference paper</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <div style="width: 100%;">
+                <span class="section-label">Recognition & Leadership</span>
+                <h2 class="section-title">Achievements & Activities</h2>
+
+                <div class="achievements-grid">
+                    <div class="achievement-card">
+                        <div class="achievement-type">Research Excellence</div>
+                        <div class="achievement-title">ICONFEST 2025 & ICICA 2026</div>
+                        <div class="achievement-context">Published two research papers on hybrid ML IoT security
+                            achieving 99.03% detection, and hexagonal smart irrigation algorithms saving 57% water
+                            consumption.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Leadership</div>
+                        <div class="achievement-title">Design Lead - Krithomedh</div>
+                        <div class="achievement-context">Led end-to-end branding and visual identity for AI/ML club
+                            events and technical workshops, increasing audience engagement through professional
+                            standards.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Entrepreneurship</div>
+                        <div class="achievement-title">Startup Race - Second Place</div>
+                        <div class="achievement-context">Developed and pitched an innovative solution for smart
+                            electricity management and strategic EV charger deployment infrastructure.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Technical Speaker</div>
+                        <div class="achievement-title">AI Week 2026 & Open House 2K24</div>
+                        <div class="achievement-context">Delivered a hands-on technical session on modern AI tools.
+                            Presented "Transforming Floral Waste into Valuable Products" during Open House at VNRVJIET.
+                        </div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Technical Design</div>
+                        <div class="achievement-title">Blind UI/UX Challenge - Runner Up</div>
+                        <div class="achievement-context">Synergia 2025 - Demonstrated exceptional speed, accuracy, and
+                            design precision in a rapid UI/UX memory replication challenge.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Hackathon Finalist</div>
+                        <div class="achievement-title">HackWave & KRITHOATHON</div>
+                        <div class="achievement-context">Award-winning participant and finalist in intensive
+                            national-level technical hackathons focused on software engineering solutions.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Community</div>
+                        <div class="achievement-title">ISOC & VJ MUN 2025</div>
+                        <div class="achievement-context">Lead the Documentation team for ISOC organizing reports.
+                            Spearheaded sponsorship outreach to 100+ companies as a committee member for VJ MUN.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Athletics</div>
+                        <div class="achievement-title">State Championship Runner-up</div>
+                        <div class="achievement-context">Telangana State-Level Roller Skating Championship - Silver
+                            medalist showcasing discipline, resilience, and sustained competitive performance.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="profile-container">
+                <div class="profile-glow"></div>
+                <div class="profile-img-wrapper">
+                    <img src="/profile.png" alt="Snehin Adepu profile" class="profile-img">
+                </div>
+            </div>
+
+            <span class="section-label">Connect</span>
+            <h2 class="section-title">Let's Build Together</h2>
+            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+                Seeking opportunities to architect scalable AI systems and cloud infrastructure. Open to collaborations
+                on innovative technical challenges.
+            </p>
+
+            <div class="contact-links">
+                <a href="mailto:adepu.snehin@gmail.com" class="contact-btn primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    adepu.snehin@gmail.com
+                </a>
+                <a href="https://github.com/snehinadepu24" target="_blank" class="contact-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/snehin-adepu" target="_blank" class="contact-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="tel:+918309067253" class="contact-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    +91 8309067253
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>2026 Snehin Adepu — Built with <span>♦</span> precision</p>
+    </footer>
+
+    <script>
+        // Nav scroll effect
+        const mainNav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            mainNav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Fade out floating contact near bottom to avoid redundancy
+        const floatingContact = document.getElementById('floatingContact');
+        const contactSection = document.getElementById('contact');
+
+        window.addEventListener('scroll', () => {
+            if (contactSection && floatingContact) {
+                const rect = contactSection.getBoundingClientRect();
+                // If the contact section is heavily in view (bottom 800px of page)
+                if (rect.top <= window.innerHeight - 100) {
+                    floatingContact.style.opacity = '0';
+                    floatingContact.style.transform = 'translateY(20px)';
+                    floatingContact.style.pointerEvents = 'none';
+                } else {
+                    floatingContact.style.opacity = '1';
+                    floatingContact.style.transform = 'translateY(0)';
+                    floatingContact.style.pointerEvents = 'auto';
+                }
+            }
+        });
+
+        // Three.js Scene with Scroll-Linked 3D Effects
+        const container = document.getElementById('canvas-container');
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0a0f1c, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Lighting - Professional but vivid
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xd4af37, 2);
+        mainLight.position.set(20, 20, 20);
+        scene.add(mainLight);
+
+        const blueLight = new THREE.PointLight(0x2563eb, 1.5, 150);
+        blueLight.position.set(-30, 10, 30);
+        scene.add(blueLight);
+
+        const fillLight = new THREE.PointLight(0xf59e0b, 1, 150);
+        fillLight.position.set(30, -20, -30);
+        scene.add(fillLight);
+
+        // Create groups for different scroll sections
+        const heroGroup = new THREE.Group();
+        const skillGroup = new THREE.Group();
+        const experienceGroup = new THREE.Group();
+        scene.add(heroGroup);
+        scene.add(skillGroup);
+        scene.add(experienceGroup);
+
+        // HERO: Neural Sphere (Data Globe) - Represents AI/ML Networks
+        const heroGeomBase = new THREE.IcosahedronGeometry(14, 2);
+        const heroEdges = new THREE.EdgesGeometry(heroGeomBase);
+        const heroLineMat = new THREE.LineBasicMaterial({
+            color: 0x2563eb,
+            transparent: true,
+            opacity: 0.15
+        });
+        const heroLines = new THREE.LineSegments(heroEdges, heroLineMat);
+
+        const heroPointsMat = new THREE.PointsMaterial({
+            color: 0xd4af37,
+            size: 0.4,
+            transparent: true,
+            opacity: 0.8
+        });
+        const heroPoints = new THREE.Points(heroGeomBase, heroPointsMat);
+
+        const heroMesh = new THREE.Group();
+        heroMesh.add(heroLines);
+        heroMesh.add(heroPoints);
+        heroMesh.position.set(15, 0, -30); // Center-right
+        heroGroup.add(heroMesh);
+
+        // Core rings overlay - Represents System Pipelines
+        const ringGeo = new THREE.TorusGeometry(18, 0.05, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x2563eb, transparent: true, opacity: 0.3 });
+        const coreMesh = new THREE.Mesh(ringGeo, ringMat);
+        coreMesh.position.set(15, 0, -30);
+        coreMesh.rotation.x = Math.PI / 3;
+        heroGroup.add(coreMesh);
+
+        // Data Streams (Floating ambient particles) - Represents Data Flow
+        const particlesGeometry = new THREE.BufferGeometry();
+        const streamCount = 400;
+        const streamPos = new Float32Array(streamCount * 3);
+        for (let i = 0; i < streamCount * 3; i += 3) {
+            streamPos[i] = (Math.random() - 0.5) * 100;
+            streamPos[i + 1] = (Math.random() - 0.5) * 80;
+            streamPos[i + 2] = (Math.random() - 0.5) * 60 - 20;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(streamPos, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0x2563eb,
+            size: 0.3,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        heroGroup.add(particlesMesh);
+
+        // SKILLS: Floating tech interfaces (databases, matrices, loops)
+        const skillCubes = [];
+        const techPositions = [
+            { x: -30, y: 15, z: -50, color: 0xd4af37, type: 'cylinder' }, // Database
+            { x: 30, y: -10, z: -40, color: 0x2563eb, type: 'ring' }, // Loop / pipeline
+            { x: -25, y: -30, z: -60, color: 0x10b981, type: 'grid' }, // Matrix/Grid
+            { x: 35, y: 25, z: -55, color: 0xf59e0b, type: 'cylinder' },
+            { x: -10, y: 35, z: -45, color: 0x2563eb, type: 'ring' },
+            { x: 20, y: -35, z: -50, color: 0x8b5cf6, type: 'grid' }
+        ];
+
+        techPositions.forEach((pos, i) => {
+            let geometry, material;
+            if (pos.type === 'cylinder') {
+                geometry = new THREE.CylinderGeometry(3, 3, 6, 16, 4, true);
+                material = new THREE.MeshBasicMaterial({ color: pos.color, wireframe: true, transparent: true, opacity: 0.2 });
+            } else if (pos.type === 'ring') {
+                geometry = new THREE.TorusGeometry(4, 0.1, 8, 48);
+                material = new THREE.MeshBasicMaterial({ color: pos.color, transparent: true, opacity: 0.3 });
+            } else { // grid
+                geometry = new THREE.PlaneGeometry(8, 8, 8, 8);
+                material = new THREE.MeshBasicMaterial({ color: pos.color, wireframe: true, transparent: true, opacity: 0.15 });
+            }
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(pos.x, pos.y, pos.z);
+            mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+
+            mesh.userData = {
+                originalY: pos.y,
+                speed: 0.2 + Math.random() * 0.2,
+                offset: i * 1000,
+                rotSpeedX: (Math.random() - 0.5) * 0.01,
+                rotSpeedY: (Math.random() - 0.5) * 0.01
+            };
+
+            skillGroup.add(mesh);
+            skillCubes.push(mesh);
+        });
+
+        // EXPERIENCE: High-tech dense constellation network
+        const nodes = [];
+        const lines = [];
+        const nodeCount = 20;
+
+        for (let i = 0; i < nodeCount; i++) {
+            const geometry = new THREE.SphereGeometry(0.5, 16, 16);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xd4af37,
+                emissive: 0xd4af37,
+                emissiveIntensity: 0.6,
+                transparent: true,
+                opacity: 0.5
+            });
+            const node = new THREE.Mesh(geometry, material);
+            // Stagger nodes more aggressively along the Z-axis and Y-axis
+            node.position.set(
+                (Math.random() - 0.5) * 80,
+                -80 - (i * 12),
+                -80 + (Math.random() - 0.5) * 40
+            );
+            experienceGroup.add(node);
+            nodes.push(node);
+
+            // Connect lines to previous 2 nodes to form a web
+            if (i > 0) {
+                for (let j = Math.max(0, i - 2); j < i; j++) {
+                    const lineGeometry = new THREE.BufferGeometry().setFromPoints([nodes[j].position, node.position]);
+                    const lineMaterial = new THREE.LineBasicMaterial({
+                        color: 0x2563eb,
+                        transparent: true,
+                        opacity: 0.15
+                    });
+                    const line = new THREE.Line(lineGeometry, lineMaterial);
+                    experienceGroup.add(line);
+                    lines.push(line);
+                }
+            }
+        }
+
+        // Scroll state
+        let scrollPercent = 0;
+        let targetScroll = 0;
+        let currentScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            targetScroll = window.scrollY / maxScroll;
+        });
+
+        // ── Image-sequence scroll scrub (silky smooth) ──
+        const TOTAL_FRAMES = 57;
+        const frameDisplay = document.getElementById('frameDisplay');
+        const progressRing = document.getElementById('progressRing');
+        const heroContainer = document.getElementById('heroScrollContainer');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        const circumference = 2 * Math.PI * 48;
+        let videoFraction = 0;
+
+        // Preload all frames into memory
+        const frames = [];
+        let framesLoaded = 0;
+        for (let i = 1; i <= TOTAL_FRAMES; i++) {
+            const img = new Image();
+            img.src = `/frames/frame_${String(i).padStart(4, '0')}.jpg`;
+            img.onload = () => { framesLoaded++; };
+            frames.push(img);
+        }
+
+        // On scroll, compute which frame to show
+        let currentFrameIndex = 0;
+        window.addEventListener('scroll', () => {
+            const containerTop = heroContainer.offsetTop;
+            const scrollZone = heroContainer.offsetHeight - window.innerHeight;
+            const scrolled = window.scrollY - containerTop;
+            videoFraction = Math.min(Math.max(scrolled / scrollZone, 0), 1);
+
+            // Pick the frame
+            const targetIndex = Math.min(
+                Math.floor(videoFraction * (TOTAL_FRAMES - 1)),
+                TOTAL_FRAMES - 1
+            );
+
+            if (targetIndex !== currentFrameIndex && frames[targetIndex].complete) {
+                frameDisplay.src = frames[targetIndex].src;
+                currentFrameIndex = targetIndex;
+            }
+
+            // Progress ring
+            const offset = circumference - (videoFraction * circumference);
+            progressRing.style.strokeDashoffset = offset;
+
+            // Fade "Scroll to Explore"
+            if (scrollIndicator) {
+                scrollIndicator.style.opacity = Math.max(1 - videoFraction * 3, 0);
+            }
+        });
+
+        // Mouse interaction
+        const mouse = new THREE.Vector2();
+        const targetMouse = new THREE.Vector2();
+
+        window.addEventListener('mousemove', (e) => {
+            targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = { threshold: 0.2, rootMargin: "0px 0px -100px 0px" };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item, .project-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax for hero content — only AFTER the hero scroll-container
+        window.addEventListener('scroll', () => {
+            const heroEnd = heroContainer.offsetTop + heroContainer.offsetHeight;
+            const pastHero = window.scrollY - heroEnd;
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                if (pastHero <= 0) {
+                    // Still inside the pinned hero zone — no parallax shift
+                    heroContent.style.transform = '';
+                } else {
+                    heroContent.style.transform = `translateY(${pastHero * 0.5}px) translateZ(${50 - pastHero * 0.1}px)`;
+                }
+            }
+        });
+
+        // Animation loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const elapsed = clock.getElapsedTime();
+
+            // Smooth scroll interpolation
+            currentScroll += (targetScroll - currentScroll) * 0.05;
+
+            // Smooth mouse interpolation
+            mouse.x += (targetMouse.x - mouse.x) * 0.05;
+            mouse.y += (targetMouse.y - mouse.y) * 0.05;
+
+            // HERO SECTION ANIMATIONS
+            // Rotate hero based on mouse and scroll
+            heroMesh.rotation.x = elapsed * 0.1 + mouse.y * 0.2;
+            heroMesh.rotation.y = elapsed * 0.15 + mouse.x * 0.2;
+
+            // Pulse effect
+            const scale = 1 + Math.sin(elapsed * 2) * 0.02;
+            heroMesh.scale.set(scale, scale, scale);
+
+            // Core rotates opposite
+            coreMesh.rotation.x = -elapsed * 0.2;
+            coreMesh.rotation.y = -elapsed * 0.3;
+            coreMesh.scale.set(scale, scale, scale);
+
+            // Move hero group based on scroll (fly through effect)
+            heroGroup.position.z = currentScroll * 100;
+            heroGroup.rotation.z = currentScroll * Math.PI * 0.5;
+
+            // Particles drift slowly
+            particlesMesh.rotation.y = elapsed * 0.05;
+            particlesMesh.position.y = Math.sin(elapsed * 0.5) * 2;
+
+            // SKILL SECTION (appears as we scroll)
+            if (currentScroll > 0.1 && currentScroll < 0.6) {
+                const skillProgress = (currentScroll - 0.1) / 0.5;
+                skillGroup.visible = true;
+                skillGroup.position.z = -50 + skillProgress * 70;
+
+                skillCubes.forEach((cube) => {
+                    cube.rotation.x += delta * cube.userData.speed + cube.userData.rotSpeedX;
+                    cube.rotation.y += delta * cube.userData.speed * 0.7 + cube.userData.rotSpeedY;
+                    cube.position.y = cube.userData.originalY + Math.sin(elapsed + cube.userData.offset) * 3;
+
+                    // Assemble effect based on scroll
+                    const targetX = cube.position.x * (1 - skillProgress * 0.3);
+                    cube.position.x += (targetX - cube.position.x) * 0.05;
+                });
+            } else {
+                skillGroup.visible = false;
+            }
+
+            // EXPERIENCE SECTION
+            if (currentScroll > 0.35) {
+                const expProgress = Math.min((currentScroll - 0.35) / 0.4, 1);
+                experienceGroup.visible = true;
+                experienceGroup.position.y = -150 + expProgress * 150;
+
+                // Animate nodes appearing and glowing
+                nodes.forEach((node, i) => {
+                    const nodeProgress = Math.max(0, Math.min((expProgress * nodeCount) - i, 1));
+                    node.scale.setScalar(nodeProgress * (1 + Math.sin(elapsed * 2 + i) * 0.2));
+                    node.material.emissiveIntensity = 0.5 + Math.sin(elapsed * 3 + i) * 0.3;
+                });
+
+                // Update line opacities dynamically
+                lines.forEach((line, i) => {
+                    const baseOpacity = Math.max(0, Math.min((expProgress * nodeCount) - i - 0.5, 1)) * 0.25;
+                    line.material.opacity = baseOpacity + (Math.sin(elapsed * 2 + i) * 0.05);
+                });
+            } else {
+                experienceGroup.visible = false;
+            }
+
+            // Camera parallax based on mouse
+            camera.position.x += (mouse.x * 5 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.y * 5 - camera.position.y) * 0.05;
+            camera.lookAt(0, 0, 0);
+
+            // Dynamic lighting based on scroll
+            mainLight.intensity = 1 - currentScroll * 0.5;
+            blueLight.intensity = 0.5 + currentScroll * 0.5;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Refined 3D Tilt effect for cards — subtle & professional
+        document.querySelectorAll('.stat-box, .project-card, .achievement-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Interactive Timeline Scroll Progress Light Effect
+        const expTimeline = document.getElementById('expTimeline');
+        const expProgress = document.getElementById('expProgress');
+        const expItems = document.querySelectorAll('.timeline-item');
+
+        if (expTimeline && expProgress) {
+            window.addEventListener('scroll', () => {
+                const rect = expTimeline.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                // Track where the center of the screen is relative to the timeline top
+                const scrolledDistance = (windowHeight * 0.5) - rect.top;
+                const totalHeight = rect.height;
+
+                let percentage = (scrolledDistance / totalHeight) * 100;
+                percentage = Math.max(0, Math.min(percentage, 100)); // clamp between 0% and 100%
+
+                expProgress.style.height = `${percentage}%`;
+
+                // Light up timeline dots as the light beam passes them
+                expItems.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const dot = item.querySelector('.timeline-dot');
+                    // Add buffer so dot lights up right as the beam touches it
+                    if (itemRect.top < (windowHeight * 0.5) + 10) {
+                        dot.classList.add('active');
+                        item.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
