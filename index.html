@@ -9,9 +9,9 @@
     <title>Snehin Adepu | Engineering Portfolio</title>
     <meta name="title" content="Snehin Adepu | Engineering Portfolio">
     <meta name="description"
-        content="Welcome to the engineering portfolio of Snehin Adepu. Explore my technical projects, software development experience, and professional achievements.">
+        content="CS Engineering (AI & ML) student with 1+ year of internship experience in backend systems, LLM optimization, and cloud infrastructure. Reduced AI inference costs by 70%+, deployed production systems supporting 1,000+ concurrent users.">
     <meta name="keywords"
-        content="Snehin Adepu, Engineering Portfolio, Software Engineer, Developer, Full Stack, Portfolio Snehin, Snehin Adepu Projects">
+        content="Snehin Adepu, Engineering Portfolio, AI ML Engineer, Backend Developer, LLM Optimization, GCP AWS, Software Engineer, Portfolio Snehin">
     <meta name="author" content="Snehin Adepu">
     <meta name="robots" content="index, follow">
 
@@ -524,6 +524,13 @@
             font-weight: 500;
         }
 
+        .stat-desc {
+            color: #8c8c8c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
         .skills-tunnel {
             width: 100%;
             display: grid;
@@ -922,6 +929,34 @@
             font-weight: 600;
         }
 
+        .project-demo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            background: rgba(212, 175, 55, 0.05);
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .project-demo-link:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+        }
+
+        .project-demo-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
         @media (max-width: 768px) {
             .project-card {
                 grid-template-columns: 1fr;
@@ -1238,6 +1273,119 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        /* ── Dynamic Media Carousel ── */
+        .media-carousel {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            /* mask-image for fade effect on edges */
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .media-track {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+            animation: scroll-media 45s linear infinite;
+            align-items: center;
+        }
+
+        @keyframes scroll-media {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(calc(-50% - 1rem));
+            }
+        }
+
+        .media-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+        }
+
+        .media-item iframe {
+            border-radius: 12px;
+            max-width: 100%;
+        }
+
+        /* responsive sizing for frames */
+        .yt-frame {
+            width: 560px;
+            height: 315px;
+        }
+
+        .li-scroll-wrapper {
+            width: 560px;
+            height: 315px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .li-scroll-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .li-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .li-frame {
+            width: 560px;
+            height: 650px;
+            background: #fff;
+            border: none;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .yt-frame {
+                width: 320px;
+                height: 180px;
+            }
+
+            .li-scroll-wrapper {
+                width: 320px;
+                height: 180px;
+            }
+
+            .li-frame {
+                width: 320px;
+                height: 500px;
+                background: #fff;
+            }
+
+            .media-track {
+                animation-duration: 35s;
+            }
+        }
     </style>
 </head>
 
@@ -1319,11 +1467,11 @@
 
                 <div class="hero-content">
                     <h1>Snehin Adepu</h1>
-                    <div class="title">AI/ML Engineer & Backend Architect</div>
+                    <div class="title">AI/ML Engineer & Backend Developer</div>
                     <p class="tagline">
-                        Engineering intelligent systems at the intersection of artificial intelligence and scalable
-                        infrastructure.
-                        Specializing in optimizing LLM pipelines, cloud-native architectures, and data-driven solutions.
+                        CS Engineering (AI & ML) student with 1+ year of internship experience in backend systems,
+                        LLM optimization, and cloud infrastructure (GCP, AWS). Reduced AI inference costs by 70%+
+                        and deployed production systems supporting 1,000+ concurrent users.
                     </p>
                 </div>
                 <div class="scroll-indicator">Scroll to Explore</div>
@@ -1336,32 +1484,43 @@
                     <span class="section-label">About</span>
                     <h2 class="section-title">Architecting the Future</h2>
                     <p class="about-text">
-                        I'm a Computer Science Engineering student specializing in AI & ML, with a proven track record
-                        of reducing system costs by 70% and achieving 99.03% accuracy in security implementations. My
-                        work bridges the gap between theoretical AI research and production-ready backend systems.
+                        I'm a Computer Science Engineering student specializing in AI & ML, with 1+ year of internship
+                        experience in backend systems, LLM optimization, and cloud infrastructure (GCP, AWS). I've
+                        reduced AI inference costs by 70%+ and deployed production systems supporting 1,000+
+                        concurrent users.
                     </p>
                     <p class="about-text" style="margin-top: 1.5rem;">
-                        From designing IoT irrigation systems that conserve 57% water to presenting research at
-                        international conferences, I approach every challenge with analytical precision and creative
-                        problem-solving.
+                        I've presented conference research in IoT security (99.03% DDoS detection accuracy) with a
+                        co-authored book chapter conditionally accepted for publication. From smart irrigation saving
+                        ~57% water to AI-powered civic platforms, I bring analytical precision and creative
+                        problem-solving to every challenge.
                     </p>
                 </div>
                 <div class="stats-container">
                     <div class="stat-box">
                         <span class="stat-number">8.55</span>
                         <div class="stat-label">CGPA</div>
+                        <div class="stat-desc">B.Tech CSE (AI & ML) at VNR VJIET, Hyderabad — 2023–Present.
+                        </div>
                     </div>
                     <div class="stat-box" title="Achieved in LLM Backend Systems">
-                        <span class="stat-number">70%</span>
-                        <div class="stat-label">LLM Cost Reduction</div>
+                        <span class="stat-number">70%+</span>
+                        <div class="stat-label">AI Inference Cost Cut</div>
+                        <div class="stat-desc">Optimized LLM prompting pipelines and backend orchestration at
+                            Loomylabs.</div>
                     </div>
-                    <div class="stat-box" title="Achieved in DeepFake Detection">
+                    <div class="stat-box" title="Production Systems">
+                        <span class="stat-number">1,000+</span>
+                        <div class="stat-label">Concurrent Users</div>
+                        <div class="stat-desc">Deployed production backend services on GCP handling real-time
+                            traffic.
+                        </div>
+                    </div>
+                    <div class="stat-box" title="Achieved in ICONFEST 2025">
                         <span class="stat-number">99.03%</span>
-                        <div class="stat-label">Deepfake Detection Rate</div>
-                    </div>
-                    <div class="stat-box" title="Achieved in IoT Irrigation Project">
-                        <span class="stat-number">57%</span>
-                        <div class="stat-label">Water Resource Saved</div>
+                        <div class="stat-label">DDoS Detection Accuracy</div>
+                        <div class="stat-desc">Conference research using XGBoost + CNN for IoT security.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1381,16 +1540,36 @@
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                                 </svg>
                             </div>
-                            <div class="skill-name">Core Technologies</div>
+                            <div class="skill-name">Languages</div>
                         </div>
                         <div class="skill-tags">
-                            <span class="skill-tag">Python</span>
                             <span class="skill-tag">Java</span>
+                            <span class="skill-tag">Python</span>
                             <span class="skill-tag">C</span>
                             <span class="skill-tag">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="color: #f472b6;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">Web & Backend</div>
+                        </div>
+                        <div class="skill-tags">
                             <span class="skill-tag">FastAPI</span>
                             <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Express</span>
                             <span class="skill-tag">React</span>
+                            <span class="skill-tag">Vite</span>
+                            <span class="skill-tag">TailwindCSS</span>
                         </div>
                     </div>
 
@@ -1402,16 +1581,36 @@
                                     <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
                                 </svg>
                             </div>
-                            <div class="skill-name">Cloud & Infrastructure</div>
+                            <div class="skill-name">Cloud & DevOps</div>
                         </div>
                         <div class="skill-tags">
                             <span class="skill-tag">GCP</span>
                             <span class="skill-tag">AWS</span>
                             <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Kubernetes</span>
                             <span class="skill-tag">Terraform</span>
+                            <span class="skill-tag">Jenkins</span>
                             <span class="skill-tag">CI/CD</span>
+                            <span class="skill-tag">Git</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="color: #a78bfa;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">Databases</div>
+                        </div>
+                        <div class="skill-tags">
                             <span class="skill-tag">PostgreSQL</span>
                             <span class="skill-tag">Supabase</span>
+                            <span class="skill-tag">MySQL</span>
                         </div>
                     </div>
 
@@ -1426,14 +1625,36 @@
                                     <path d="M8 12h8" />
                                 </svg>
                             </div>
-                            <div class="skill-name">AI & Machine Learning</div>
+                            <div class="skill-name">ML / AI</div>
                         </div>
                         <div class="skill-tags">
                             <span class="skill-tag">CNNs</span>
                             <span class="skill-tag">XGBoost</span>
                             <span class="skill-tag">Prompt Engineering</span>
-                            <span class="skill-tag">LLM Optimization</span>
                             <span class="skill-tag">Model Benchmarking</span>
+                            <span class="skill-tag">Vertex AI</span>
+                            <span class="skill-tag">Generative AI</span>
+                            <span class="skill-tag">Agentic AI</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="color: #f59e0b;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                                </svg>
+                            </div>
+                            <div class="skill-name">Tools & Analytics</div>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Postman</span>
+                            <span class="skill-tag">Artillery</span>
+                            <span class="skill-tag">k6</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">Tableau</span>
+                            <span class="skill-tag">Power BI</span>
                         </div>
                     </div>
                 </div>
@@ -1457,10 +1678,11 @@
                             <div class="timeline-title">AIML & Backend Intern</div>
                             <div class="timeline-company">Loomylabs</div>
                             <div class="timeline-desc">
-                                Architected backend systems achieving 70% LLM inference cost reduction through optimized
-                                prompting pipelines. Deployed production services on GCP with complete CI/CD
-                                infrastructure,
-                                managing PostgreSQL schemas and load testing for 1000+ concurrent users.
+                                Optimized LLM prompting pipelines, reducing inference costs by 70%+. Deployed backend
+                                services on GCP with CI/CD pipelines and DNS/networking setup. Designed PostgreSQL
+                                schemas (Supabase) and handled 1,000+ concurrent users. Evaluated AI frameworks and
+                                cloud tools for production architecture. Worked with Vertex AI & Generative AI for
+                                benchmarking LLMs.
                             </div>
                         </div>
                     </div>
@@ -1468,31 +1690,26 @@
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
-                            <div class="timeline-date">June 2025 – Dec 2025</div>
-                            <div class="timeline-title">AI Transformative Learning Intern</div>
-                            <div class="timeline-company">AICTE TechSaksham (Microsoft & SAP)</div>
-                            <div class="timeline-desc">
-                                Selected for prestigious national internship program. Developed production-ready AI
-                                applications
-                                through structured learning modules, focusing on enterprise-scale AI implementation and
-                                cloud
-                                integration.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-date">2024</div>
-                            <div class="timeline-title">Project Intern</div>
+                            <div class="timeline-date">Oct 2025 – Dec 2025</div>
+                            <div class="timeline-title">Project Intern — Price Feed Tracker</div>
                             <div class="timeline-company">Alfago Research LLP</div>
                             <div class="timeline-desc">
-                                Engineered high-frequency data pipeline processing OHLCV market data with 5-minute
-                                intervals.
-                                Implemented AWS cloud storage using Parquet format for analytical efficiency and
-                                real-time
-                                aggregation systems.
+                                Built pipeline fetching OHLCV data every 5 minutes (50,000+ records/day). Stored data
+                                in AWS S3 using Apache Parquet (35% cost reduction, 2× speed). Developed time-series
+                                aggregation (1m/5m/1h/1d).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Feb 2025 – Mar 2025</div>
+                            <div class="timeline-title">AICTE Internship</div>
+                            <div class="timeline-company">TechSaksham (Microsoft & SAP)</div>
+                            <div class="timeline-desc">
+                                Learned ML concepts: supervised learning, neural networks, evaluation. Built real-world
+                                AI projects through guided labs. Certified by AICTE, Microsoft & SAP.
                             </div>
                         </div>
                     </div>
@@ -1514,39 +1731,45 @@
                             <div class="project-icon project-icon--email">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                                 </svg>
                             </div>
                         </div>
                         <div class="project-body">
-                            <h3>Enterprise SMTP Infrastructure</h3>
+                            <h3>JanSamadhan — AI Civic Grievance Platform</h3>
                             <div class="project-tech">
-                                <span>Node.js</span>
-                                <span>React</span>
-                                <span>Supabase</span>
-                                <span>Nodemailer</span>
+                                <span>AI Classification</span>
+                                <span>Multilingual NLP</span>
+                                <span>WhatsApp API</span>
+                                <span>Dashboards</span>
                             </div>
                             <p class="project-desc">
-                                Production-grade email delivery system with intelligent retry logic, real-time delivery
-                                tracking, and comprehensive analytics dashboard. Features sub-second latency monitoring
-                                and
-                                automated failover mechanisms.
+                                AI-powered complaint classification platform with multilingual support and WhatsApp
+                                integration. Features real-time dashboards for civic authorities. Selected among
+                                Top 1000 teams in <strong>India Innovates 2026</strong> (Bharat Mandapam, Delhi).
                             </p>
                             <div class="project-meta">
                                 <div class="project-stat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <polyline points="12 6 12 12 16 14" />
+                                        <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
+                                        <path d="m9 12 2 2 4-4" />
                                     </svg>
-                                    <span>Real-time tracking</span>
+                                    <span><strong>Top 1000</strong> nationally</span>
                                 </div>
                                 <div class="project-stat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                     </svg>
-                                    <span><strong>&lt;1s</strong> latency</span>
+                                    <span>Multilingual AI</span>
                                 </div>
+                                <a href="https://crm-five-gold-48.vercel.app/" target="_blank" class="project-demo-link">
+                                    <span>Demo</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1558,25 +1781,23 @@
                             <div class="project-icon project-icon--iot">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z" />
-                                    <circle cx="12" cy="10" r="3" />
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
                                 </svg>
                             </div>
                         </div>
                         <div class="project-body">
-                            <h3>Smart IoT Irrigation Controller</h3>
+                            <h3>AI-Based Monument Restoration & Virtual Tourism</h3>
                             <div class="project-tech">
-                                <span>Arduino</span>
-                                <span>IoT Sensors</span>
-                                <span>Automation</span>
-                                <span>C++</span>
+                                <span>iPad LiDAR</span>
+                                <span>SAM Model</span>
+                                <span>Unity</span>
+                                <span>3D Reconstruction</span>
                             </div>
                             <p class="project-desc">
-                                Precision agriculture system utilizing hexagonal moisture sensor arrays and
-                                geometric-depth
-                                sensing algorithms. Achieved 57% water conservation through ML-driven predictive
-                                irrigation
-                                scheduling.
+                                Used iPad LiDAR + SAM model for 3D reconstruction of historical monuments.
+                                Built Unity walkthrough with mobile optimization. Reduced cost vs traditional
+                                LiDAR + NeRF methods for heritage preservation.
                             </p>
                             <div class="project-meta">
                                 <div class="project-stat">
@@ -1584,7 +1805,7 @@
                                         <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
                                         <path d="m9 12 2 2 4-4" />
                                     </svg>
-                                    <span><strong>57%</strong> water saved</span>
+                                    <span>Cost-effective 3D</span>
                                 </div>
                                 <div class="project-stat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1592,8 +1813,16 @@
                                         <path d="M3 9h18" />
                                         <path d="M9 21V9" />
                                     </svg>
-                                    <span>Published research</span>
+                                    <span>Mobile-optimized</span>
                                 </div>
+                                <a href="https://skfb.ly/pIrCK" target="_blank" class="project-demo-link">
+                                    <span>Demo</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1605,38 +1834,36 @@
                             <div class="project-icon project-icon--security">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                    <path d="m9 12 2 2 4-4" />
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                 </svg>
                             </div>
                         </div>
                         <div class="project-body">
-                            <h3>Hybrid DDoS Detection System</h3>
+                            <h3>Uber Rides Analysis (ML)</h3>
                             <div class="project-tech">
                                 <span>XGBoost</span>
-                                <span>CNN</span>
-                                <span>Network Security</span>
                                 <span>Python</span>
+                                <span>Data Analysis</span>
+                                <span>ML</span>
                             </div>
                             <p class="project-desc">
-                                Research-grade intrusion detection system combining XGBoost and CNN architectures for
-                                IoT
-                                networks. Published research achieving 99.03% detection accuracy with automated firewall
-                                mitigation protocols.
+                                Analyzed 500,000+ ride records to uncover pricing and demand patterns.
+                                Built an XGBoost regression model achieving RMSE: 1.84 for fare prediction
+                                with feature engineering and hyperparameter tuning.
                             </p>
                             <div class="project-meta">
                                 <div class="project-stat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                     </svg>
-                                    <span><strong>99.03%</strong> accuracy</span>
+                                    <span>RMSE: <strong>1.84</strong></span>
                                 </div>
                                 <div class="project-stat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                     </svg>
-                                    <span>Conference paper</span>
+                                    <span><strong>500K+</strong> records</span>
                                 </div>
                             </div>
                         </div>
@@ -1653,62 +1880,115 @@
 
                 <div class="achievements-grid">
                     <div class="achievement-card">
+                        <div class="achievement-type">National Recognition</div>
+                        <div class="achievement-title">India Innovates 2026 — Top 1000 Teams</div>
+                        <div class="achievement-context">Selected among Top 1000 teams nationally for JanSamadhan,
+                            an AI-powered civic grievance platform. Presented at Bharat Mandapam, Delhi.</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-type">Hackathon — 1st Place</div>
+                        <div class="achievement-title">Chaos2Clarity (Synergia 2026 @ BVRIT)</div>
+                        <div class="achievement-context">Won 1st Place by building dashboards analyzing 50M+
+                            displaced people data, delivering actionable insights for humanitarian response.</div>
+                    </div>
+
+                    <div class="achievement-card">
                         <div class="achievement-type">Research Excellence</div>
                         <div class="achievement-title">ICONFEST 2025 & ICICA 2026</div>
-                        <div class="achievement-context">Published two research papers on hybrid ML IoT security
-                            achieving 99.03% detection, and hexagonal smart irrigation algorithms saving 57% water
-                            consumption.</div>
+                        <div class="achievement-context">Presented conference research — IoT DDoS detection using
+                            XGBoost + CNN (99.03% accuracy), and smart irrigation reducing water usage by ~57%.</div>
                     </div>
 
                     <div class="achievement-card">
-                        <div class="achievement-type">Leadership</div>
-                        <div class="achievement-title">Design Lead - Krithomedh</div>
-                        <div class="achievement-context">Led end-to-end branding and visual identity for AI/ML club
-                            events and technical workshops, increasing audience engagement through professional
-                            standards.</div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-type">Entrepreneurship</div>
-                        <div class="achievement-title">Startup Race - Second Place</div>
-                        <div class="achievement-context">Developed and pitched an innovative solution for smart
-                            electricity management and strategic EV charger deployment infrastructure.</div>
+                        <div class="achievement-type">Publication</div>
+                        <div class="achievement-title">Book Chapter (Conditionally Accepted)</div>
+                        <div class="achievement-context">"Frontiers of Hybrid AI: Neuro-Symbolic Approaches" — covering
+                            CNNs, RNNs, Transformers, SNNs, neuromorphic hardware with applications in robotics,
+                            NLP, IoT.</div>
                     </div>
 
                     <div class="achievement-card">
                         <div class="achievement-type">Technical Speaker</div>
-                        <div class="achievement-title">AI Week 2026 & Open House 2K24</div>
-                        <div class="achievement-context">Delivered a hands-on technical session on modern AI tools.
-                            Presented "Transforming Floral Waste into Valuable Products" during Open House at VNRVJIET.
+                        <div class="achievement-title">AI Tools Workshop — AI Week 2026</div>
+                        <div class="achievement-context">Delivered a hands-on technical session training 150+ students
+                            on modern AI tools and practical applications during the college AI Week.
                         </div>
                     </div>
 
                     <div class="achievement-card">
-                        <div class="achievement-type">Technical Design</div>
-                        <div class="achievement-title">Blind UI/UX Challenge - Runner Up</div>
-                        <div class="achievement-context">Synergia 2025 - Demonstrated exceptional speed, accuracy, and
-                            design precision in a rapid UI/UX memory replication challenge.</div>
+                        <div class="achievement-type">Entrepreneurship</div>
+                        <div class="achievement-title">Startup Race — 2nd Place</div>
+                        <div class="achievement-context">Developed and pitched an innovative solution, demonstrating
+                            business acumen alongside technical engineering skills.</div>
                     </div>
 
                     <div class="achievement-card">
-                        <div class="achievement-type">Hackathon Finalist</div>
-                        <div class="achievement-title">HackWave & KRITHOATHON</div>
-                        <div class="achievement-context">Award-winning participant and finalist in intensive
-                            national-level technical hackathons focused on software engineering solutions.</div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-type">Community</div>
-                        <div class="achievement-title">ISOC & VJ MUN 2025</div>
-                        <div class="achievement-context">Lead the Documentation team for ISOC organizing reports.
-                            Spearheaded sponsorship outreach to 100+ companies as a committee member for VJ MUN.</div>
+                        <div class="achievement-type">Leadership</div>
+                        <div class="achievement-title">Design Lead — Krithomedh (AI/ML Club)</div>
+                        <div class="achievement-context">Led branding for 8+ events, increasing registrations by ~30%.
+                            Documentation Volunteer at ISOC VNRVJIET — managed 4-member team, reduced rework by 25%.
+                            Sponsorship outreach to 100+ companies for VJ MUN 2025.</div>
                     </div>
 
                     <div class="achievement-card">
                         <div class="achievement-type">Athletics</div>
-                        <div class="achievement-title">State Championship Runner-up</div>
-                        <div class="achievement-context">Telangana State-Level Roller Skating Championship - Silver
+                        <div class="achievement-title">Roller Skating Championship — 2nd Place</div>
+                        <div class="achievement-context">Telangana State-Level Roller Skating Championship — Silver
                             medalist showcasing discipline, resilience, and sustained competitive performance.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="media-updates" style="overflow: hidden;">
+            <div style="width: 100%; text-align: center;">
+                <span class="section-label" style="display: block; margin-bottom: 0.5rem;">Media & Engagements</span>
+                <h2 class="section-title">Latest Posts & Videos</h2>
+            </div>
+
+            <div class="media-carousel">
+                <div class="media-track">
+                    <!-- Original Set -->
+                    <div class="media-item">
+                        <iframe class="yt-frame" src="https://www.youtube.com/embed/FCq9d1OTy2U?si=4eo3rTMrIVlF1R5Q"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="media-item">
+                        <div class="li-scroll-wrapper">
+                            <iframe class="li-frame"
+                                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7428705882382888960?collapsed=1"
+                                frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <iframe class="yt-frame" src="https://www.youtube.com/embed/7h4zvP5xrms?si=6GyTMy5lO_jYaJfZ"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+
+                    <!-- Duplicated Set for Infinite Scroll -->
+                    <div class="media-item">
+                        <iframe class="yt-frame" src="https://www.youtube.com/embed/FCq9d1OTy2U?si=4eo3rTMrIVlF1R5Q"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="media-item">
+                        <div class="li-scroll-wrapper">
+                            <iframe class="li-frame"
+                                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7428705882382888960?collapsed=1"
+                                frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <iframe class="yt-frame" src="https://www.youtube.com/embed/7h4zvP5xrms?si=6GyTMy5lO_jYaJfZ"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -1725,8 +2005,8 @@
             <span class="section-label">Connect</span>
             <h2 class="section-title">Let's Build Together</h2>
             <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
-                Seeking opportunities to architect scalable AI systems and cloud infrastructure. Open to collaborations
-                on innovative technical challenges.
+                Seeking software engineering, ML engineering, or backend development roles.
+                Open to collaborations on innovative technical challenges.
             </p>
 
             <div class="contact-links">
@@ -2153,21 +2433,16 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Refined 3D Tilt effect for cards — subtle & professional
+        // Refined Enlarge effect for cards — cool & professional
         document.querySelectorAll('.stat-box, .project-card, .achievement-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'scale(1.02) translateY(-4px)';
+                card.style.zIndex = '10';
             });
 
             card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
+                card.style.zIndex = '1';
             });
         });
 
@@ -2175,6 +2450,13 @@
         const expTimeline = document.getElementById('expTimeline');
         const expProgress = document.getElementById('expProgress');
         const expItems = document.querySelectorAll('.timeline-item');
+
+        // Auto-scroll LinkedIn wrappers to middle to show post image
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.li-scroll-wrapper').forEach(w => w.scrollTop = 160);
+            }, 500); // Slight delay ensures iframe structure is accounted for
+        });
 
         if (expTimeline && expProgress) {
             window.addEventListener('scroll', () => {
