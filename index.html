@@ -368,20 +368,52 @@
 
         /* Responsive: stack on mobile */
         @media (max-width: 768px) {
+            .hero-scroll-container {
+                height: 450vh;
+                /* More vertical runway on mobile to slow down the scrubbing */
+            }
+
             .hero {
                 flex-direction: column;
-                gap: 2.5rem;
+                gap: 1.5rem;
                 text-align: center;
+                justify-content: flex-start;
+                /* Ensures content flows downwards, never cuts off the face at top */
+                padding-top: 100px;
+                /* Leaves room for fixed nav */
+                height: 100vh;
+                min-height: 600px;
             }
 
             .hero-content {
                 text-align: center;
+                transform: none !important;
+                /* Avoid parallax pushing it out of view on mobile */
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 10vw, 3.5rem);
+                margin-bottom: 0.5rem;
+                transform: none !important;
+            }
+
+            .hero .title {
+                font-size: clamp(0.9rem, 4vw, 1.2rem);
+                margin-bottom: 1rem;
+                transform: none !important;
+            }
+
+            .hero .tagline {
+                font-size: 0.9rem;
+                line-height: 1.6;
+                transform: none !important;
             }
 
             .video-circle-wrapper {
-                width: 180px;
-                height: 180px;
+                width: 160px;
+                height: 160px;
                 order: -1;
+                margin-top: 1rem;
             }
         }
 
@@ -534,7 +566,7 @@
         .skills-tunnel {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
@@ -976,7 +1008,7 @@
 
         .achievements-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
             gap: 2rem;
             width: 100%;
         }
@@ -1166,6 +1198,14 @@
                 gap: 3rem;
             }
 
+            .stats-container {
+                gap: 1rem;
+            }
+
+            .stat-box {
+                padding: 1.5rem 1rem;
+            }
+
             .project-card {
                 grid-template-columns: 1fr;
             }
@@ -1186,6 +1226,18 @@
             align-items: center;
             gap: 15px;
             transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-contact-toggle {
+                width: 48px;
+                height: 48px;
+            }
         }
 
         .floating-contact-menu {
@@ -1367,24 +1419,38 @@
 
         @media (max-width: 768px) {
             .yt-frame {
-                width: 320px;
-                height: 180px;
+                width: 85vw;
+                height: calc(85vw * 9 / 16);
             }
 
             .li-scroll-wrapper {
-                width: 320px;
-                height: 180px;
+                width: 85vw;
+                height: 300px;
+                /* More compact for mobile LinkedIn post */
+                border-radius: 12px;
             }
 
             .li-frame {
-                width: 320px;
-                height: 500px;
+                width: 85vw;
+                height: 480px;
                 background: #fff;
             }
 
             .media-track {
-                animation-duration: 35s;
+                animation-duration: 20s;
+                gap: 1.5rem;
             }
+
+            .media-item {
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                padding: 0.5rem;
+            }
+        }
+
+        /* Pause the slider when hovering or interacting */
+        .media-track:hover,
+        .media-track:active {
+            animation-play-state: paused;
         }
     </style>
 </head>
@@ -1643,7 +1709,8 @@
                             <div class="skill-icon" style="color: #f59e0b;">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
-                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                                    <path
+                                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                                 </svg>
                             </div>
                             <div class="skill-name">Tools & Analytics</div>
@@ -1762,9 +1829,11 @@
                                     </svg>
                                     <span>Multilingual AI</span>
                                 </div>
-                                <a href="https://crm-five-gold-48.vercel.app/" target="_blank" class="project-demo-link">
+                                <a href="https://crm-five-gold-48.vercel.app/" target="_blank"
+                                    class="project-demo-link">
                                     <span>Demo</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                         <polyline points="15 3 21 3 21 9"></polyline>
                                         <line x1="10" y1="14" x2="21" y2="3"></line>
@@ -1817,7 +1886,8 @@
                                 </div>
                                 <a href="https://skfb.ly/pIrCK" target="_blank" class="project-demo-link">
                                     <span>Demo</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                         <polyline points="15 3 21 3 21 9"></polyline>
                                         <line x1="10" y1="14" x2="21" y2="3"></line>
@@ -2280,7 +2350,8 @@
                 TOTAL_FRAMES - 1
             );
 
-            if (targetIndex !== currentFrameIndex && frames[targetIndex].complete) {
+            if (targetIndex !== currentFrameIndex) {
+                // If it's preloaded, update src. (Browser handles caching/painting)
                 frameDisplay.src = frames[targetIndex].src;
                 currentFrameIndex = targetIndex;
             }
