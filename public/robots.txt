@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap Location
 Sitemap: https://www.snehinadepu.me/sitemap.xml
