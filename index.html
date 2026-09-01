@@ -111,6 +111,13 @@
           ]
         },
         {
+          "@type": "ScholarlyArticle",
+          "@id": "https://www.snehinadepu.me/#paper-iot-ddos",
+          "name": "Securing IoT Networks Using Hybrid Machine Learning Model Against DDoS Attacks",
+          "url": "https://www.researchgate.net/publication/412146269_Securing_IoT_Networks_Using_Hybrid_Machine_Learning_Model_Against_DDoS_Attacks",
+          "author": { "@id": "https://www.snehinadepu.me/#person" }
+        },
+        {
           "@type": "ProfilePage",
           "@id": "https://www.snehinadepu.me/#profilepage",
           "url": "https://www.snehinadepu.me/",
@@ -556,6 +563,16 @@
             color: var(--text-secondary);
             font-size: 1.1rem;
             line-height: 2;
+        }
+
+        .about-text a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .about-text a:hover {
+            text-decoration: underline;
         }
 
         .stats-container {
@@ -1134,6 +1151,21 @@
             line-height: 1.6;
         }
 
+        .achievement-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.75rem;
+            font-size: 0.78rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .achievement-link:hover {
+            text-decoration: underline;
+        }
+
         .contact-section {
             text-align: center;
             display: flex;
@@ -1620,8 +1652,10 @@
                         concurrent users.
                     </p>
                     <p class="about-text" style="margin-top: 1.5rem;">
-                        I've presented conference research in IoT security (99.03% DDoS detection accuracy) with a
-                        co-authored book chapter conditionally accepted for publication. From smart irrigation saving
+                        I've presented conference research in IoT security (99.03% DDoS detection accuracy), including
+                        <a href="https://www.researchgate.net/publication/412146269_Securing_IoT_Networks_Using_Hybrid_Machine_Learning_Model_Against_DDoS_Attacks"
+                            target="_blank" rel="noopener noreferrer">Securing IoT Networks Using Hybrid Machine Learning Model Against DDoS Attacks</a>,
+                        with a co-authored book chapter conditionally accepted for publication. From smart irrigation saving
                         ~57% water to AI-powered civic platforms, I bring analytical precision and creative
                         problem-solving to every challenge.
                     </p>
@@ -2055,6 +2089,11 @@
                         <h3 class="achievement-title">ICONFEST 2025 & ICICA 2026</h3>
                         <div class="achievement-context">Presented conference research — IoT DDoS detection using
                             XGBoost + CNN (99.03% accuracy), and smart irrigation reducing water usage by ~57%.</div>
+                        <a class="achievement-link"
+                            href="https://www.researchgate.net/publication/412146269_Securing_IoT_Networks_Using_Hybrid_Machine_Learning_Model_Against_DDoS_Attacks"
+                            target="_blank" rel="noopener noreferrer">
+                            View paper on ResearchGate
+                        </a>
                     </div>
 
                     <div class="achievement-card">
