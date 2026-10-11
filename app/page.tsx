@@ -18,17 +18,17 @@ import { projects, experience } from "@/content/data";
 import styles from "./page.module.css";
 
 // ── Heavy client-only components ─────────────────────────────
-const HeroLattice        = dynamic(() => import("@/components/HeroLattice"),        { ssr: false });
+const HeroLattice = dynamic(() => import("@/components/HeroLattice"), { ssr: false });
 const FrameScrubPortrait = dynamic(() => import("@/components/FrameScrubPortrait"), { ssr: false });
-const Threads            = dynamic(() => import("@/components/Threads"),            { ssr: false });
-const Aurora             = dynamic(() => import("@/components/Aurora"),             { ssr: false });
-const Magnet             = dynamic(() => import("@/components/Magnet"),             { ssr: false });
-const DecryptedText      = dynamic(() => import("@/components/DecryptedText"),      { ssr: false });
-const SpotlightCard      = dynamic(() => import("@/components/SpotlightCard"),      { ssr: false });
-const PipelineScene      = dynamic(() => import("@/components/PipelineScene"),      { ssr: false });
-const LoadBalancer3D     = dynamic(() => import("@/components/LoadBalancer3D"),     { ssr: false });
-const NumberTicker       = dynamic(() => import("@/components/NumberTicker"),       { ssr: false });
-const CobeGlobe          = dynamic(() => import("@/components/CobeGlobe"),          { ssr: false });
+const Threads = dynamic(() => import("@/components/Threads"), { ssr: false });
+const Aurora = dynamic(() => import("@/components/Aurora"), { ssr: false });
+const Magnet = dynamic(() => import("@/components/Magnet"), { ssr: false });
+const DecryptedText = dynamic(() => import("@/components/DecryptedText"), { ssr: false });
+const SpotlightCard = dynamic(() => import("@/components/SpotlightCard"), { ssr: false });
+const PipelineScene = dynamic(() => import("@/components/PipelineScene"), { ssr: false });
+const LoadBalancer3D = dynamic(() => import("@/components/LoadBalancer3D"), { ssr: false });
+const NumberTicker = dynamic(() => import("@/components/NumberTicker"), { ssr: false });
+const CobeGlobe = dynamic(() => import("@/components/CobeGlobe"), { ssr: false });
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -36,47 +36,47 @@ if (typeof window !== "undefined") {
 
 // ── Capabilities ─────────────────────────────────────────────
 const capabilities = [
-  { area: "ML & AI Systems",     items: ["LLM optimization", "Vertex AI", "Generative AI", "XGBoost", "CNN", "NLP"] },
+  { area: "ML & AI Systems", items: ["LLM optimization", "Vertex AI", "Generative AI", "XGBoost", "CNN", "NLP"] },
   { area: "Backend Engineering", items: ["FastAPI", "Python", "PostgreSQL", "Supabase", "REST APIs", "GCP"] },
-  { area: "Data & Pipelines",    items: ["AWS S3", "Apache Parquet", "Time-series", "CI/CD", "Docker", "Git"] },
-  { area: "Research",            items: ["IoT Security", "DDoS Detection", "3D Reconstruction", "LiDAR", "Unity"] },
+  { area: "Data & Pipelines", items: ["AWS S3", "Apache Parquet", "Time-series", "CI/CD", "Docker", "Git"] },
+  { area: "Research", items: ["IoT Security", "DDoS Detection", "3D Reconstruction", "LiDAR", "Unity"] },
 ];
 
 // ── Lab items ────────────────────────────────────────────────
 const labItems = [
-  { num: "01", title: "IoT DDoS Detection",      desc: "XGBoost + CNN hybrid — 99.03% accuracy. Presented at ICONFEST 2025.", link: "https://www.researchgate.net/publication/412146269_Securing_IoT_Networks_Using_Hybrid_Machine_Learning_Model_Against_DDoS_Attacks", tag: "Conference Paper" },
+  { num: "01", title: "IoT DDoS Detection", desc: "XGBoost + CNN hybrid — 99.03% accuracy. Presented at ICONFEST 2025.", link: "https://www.researchgate.net/publication/412146269_Securing_IoT_Networks_Using_Hybrid_Machine_Learning_Model_Against_DDoS_Attacks", tag: "Conference Paper" },
   { num: "02", title: "3D Monument Restoration", desc: "iPad LiDAR + SAM for heritage site reconstruction. Unity walkthrough, mobile-optimised.", link: "https://skfb.ly/pIrCK", tag: "Research Project" },
-  { num: "03", title: "AI Grievance Platform",   desc: "JanSamadhan — multilingual AI complaint routing with WhatsApp integration. Top 1000 in India Innovates 2026.", link: "https://crm-five-gold-48.vercel.app/", tag: "Live Demo" },
-  { num: "04", title: "Price Feed Pipeline",     desc: "OHLCV data at 5-min intervals. 50,000+ records/day. Apache Parquet on S3 — 35% cost reduction.", link: undefined, tag: "System Design" },
+  { num: "03", title: "AI Grievance Platform", desc: "JanSamadhan — multilingual AI complaint routing with WhatsApp integration. Top 1000 in India Innovates 2026.", link: "https://crm-five-gold-48.vercel.app/", tag: "Live Demo" },
+  { num: "04", title: "Price Feed Pipeline", desc: "OHLCV data at 5-min intervals. 50,000+ records/day. Apache Parquet on S3 — 35% cost reduction.", link: undefined, tag: "System Design" },
 ];
 
 // ── LLM / RAG Pipeline nodes & edges (Work section) ─────────
 const llmNodes: PipelineNode[] = [
-  { label: "User Query",    sublabel: "input",       shape: "sphere",    color: "#F3EEE6", x: -4.2, y: 0,    z: 0 },
-  { label: "Embedding",     sublabel: "text-ada",    shape: "octahedron",color: "#C45C26", x: -2.2, y: 0.5,  z: 0 },
-  { label: "Vector DB",     sublabel: "pgvector",    shape: "cylinder",  color: "#8A847A", x: -0.2, y: -0.3, z: 0 },
-  { label: "Context",       sublabel: "top-k chunks",shape: "box",       color: "#C45C26", x:  1.8, y: 0.4,  z: 0 },
-  { label: "LLM",           sublabel: "Vertex AI",   shape: "octahedron",color: "#FF8040", x:  3.5, y: 0,    z: 0.2 },
-  { label: "Response",      sublabel: "output",      shape: "sphere",    color: "#F3EEE6", x:  5.0, y: -0.2, z: 0 },
+  { label: "User Query", sublabel: "input", shape: "sphere", color: "#F3EEE6", x: -4.2, y: 0, z: 0 },
+  { label: "Embedding", sublabel: "text-ada", shape: "octahedron", color: "#C45C26", x: -2.2, y: 0.5, z: 0 },
+  { label: "Vector DB", sublabel: "pgvector", shape: "cylinder", color: "#8A847A", x: -0.2, y: -0.3, z: 0 },
+  { label: "Context", sublabel: "top-k chunks", shape: "box", color: "#C45C26", x: 1.8, y: 0.4, z: 0 },
+  { label: "LLM", sublabel: "Vertex AI", shape: "octahedron", color: "#FF8040", x: 3.5, y: 0, z: 0.2 },
+  { label: "Response", sublabel: "output", shape: "sphere", color: "#F3EEE6", x: 5.0, y: -0.2, z: 0 },
 ];
-const llmEdges: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5]];
+const llmEdges: [number, number][] = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]];
 
 // ── Data Ingestion Pipeline nodes & edges (Lab section) ──────
 const dataPipeNodes: PipelineNode[] = [
-  { label: "OHLCV Feed",   sublabel: "5-min interval", shape: "sphere",    color: "#F3EEE6", x: -4.0, y: 0,    z: 0 },
-  { label: "Ingestor",     sublabel: "Python service", shape: "octahedron",color: "#C45C26", x: -2.2, y: 0.4,  z: 0 },
-  { label: "Redis Cache",  sublabel: "hot layer",      shape: "cylinder",  color: "#FF4040", x: -0.2, y: -0.2, z: 0 },
-  { label: "S3 / Parquet", sublabel: "35% cost cut",  shape: "box",       color: "#3ecf6e", x:  1.8, y: 0.5,  z: 0 },
-  { label: "Aggregator",   sublabel: "1m/5m/1h/1d",   shape: "octahedron",color: "#C45C26", x:  3.5, y: 0,    z: 0 },
-  { label: "Time-series",  sublabel: "dashboard",      shape: "sphere",    color: "#F3EEE6", x:  5.0, y: -0.3, z: 0 },
+  { label: "OHLCV Feed", sublabel: "5-min interval", shape: "sphere", color: "#F3EEE6", x: -4.0, y: 0, z: 0 },
+  { label: "Ingestor", sublabel: "Python service", shape: "octahedron", color: "#C45C26", x: -2.2, y: 0.4, z: 0 },
+  { label: "Redis Cache", sublabel: "hot layer", shape: "cylinder", color: "#FF4040", x: -0.2, y: -0.2, z: 0 },
+  { label: "S3 / Parquet", sublabel: "35% cost cut", shape: "box", color: "#3ecf6e", x: 1.8, y: 0.5, z: 0 },
+  { label: "Aggregator", sublabel: "1m/5m/1h/1d", shape: "octahedron", color: "#C45C26", x: 3.5, y: 0, z: 0 },
+  { label: "Time-series", sublabel: "dashboard", shape: "sphere", color: "#F3EEE6", x: 5.0, y: -0.3, z: 0 },
 ];
-const dataPipeEdges: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5]];
+const dataPipeEdges: [number, number][] = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]];
 
 // ── Wave gate duration — removed ─────────────────────────────
 
 // ─────────────────────────────────────────────────────────────
 export default function HomePage() {
-  const containerRef   = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const [prefersReduced, setPrefersReduced] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -110,8 +110,10 @@ export default function HomePage() {
       onEnter: (els) => {
         gsap.fromTo(els,
           { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", y: 24, opacity: 0 },
-          { clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)", y: 0, opacity: 1,
-            duration: 1, ease: "power4.out", stagger: 0.1 }
+          {
+            clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)", y: 0, opacity: 1,
+            duration: 1, ease: "power4.out", stagger: 0.1
+          }
         );
       },
       once: true,
@@ -162,8 +164,10 @@ export default function HomePage() {
       const bg = sec.querySelector<HTMLElement>(".section-bg");
       if (!bg) return;
       gsap.fromTo(bg, { yPercent: -15 },
-        { yPercent: 15, ease: "none",
-          scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } }
+        {
+          yPercent: 15, ease: "none",
+          scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true }
+        }
       );
     });
 
@@ -258,7 +262,7 @@ export default function HomePage() {
                       data-cursor="launch"
                       aria-label="Résumé"
                     >
-                      Download Résumé <ArrowUpRight size={16} aria-hidden="true" />
+                      Résumé <ArrowUpRight size={16} aria-hidden="true" />
                     </button>
                   </Magnet>
                   <Magnet magnetStrength={3} disabled={isMobile}>
@@ -533,7 +537,7 @@ export default function HomePage() {
         <section id="contact" className={`${styles.sectionContact} parallax-section`}>
           {!prefersReduced && (
             <div className={styles.contactAurora} aria-hidden="true">
-              <Aurora colorStops={["#0C0B09","#3A1A0A","#C45C26"]} amplitude={0.8} blend={0.45} speed={0.3} />
+              <Aurora colorStops={["#0C0B09", "#3A1A0A", "#C45C26"]} amplitude={0.8} blend={0.45} speed={0.3} />
             </div>
           )}
           <div className="container">
