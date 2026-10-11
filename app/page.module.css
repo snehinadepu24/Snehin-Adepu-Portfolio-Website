@@ -1381,7 +1381,7 @@
 @media (max-width: 768px) {
   /* ── Hero Runway & Sticky Pinned Viewport ── */
   .heroScrollRunway {
-    height: 160vh;
+    height: 100vh;
   }
 
   .heroSticky {

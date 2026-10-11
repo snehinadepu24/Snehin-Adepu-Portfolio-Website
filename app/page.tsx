@@ -79,6 +79,7 @@ export default function HomePage() {
   const containerRef   = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const [prefersReduced, setPrefersReduced] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { triggerLaunch } = useRocketLaunch();
 
   // Detect reduced motion preference
@@ -86,6 +87,15 @@ export default function HomePage() {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReduced(mq.matches);
     const h = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
+
+  // Detect mobile (disable Magnet on small screens)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mq.addEventListener("change", h);
     return () => mq.removeEventListener("change", h);
   }, []);
@@ -240,17 +250,23 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className={styles.heroCtas}>
-                  <Magnet magnetStrength={3}>
-                    <a href="#work" className={styles.btnPrimary} data-cursor="view">
-                      View Work <ArrowUpRight size={16} aria-hidden="true" />
-                    </a>
+                  <Magnet magnetStrength={3} disabled={isMobile}>
+                    <button
+                      type="button"
+                      onClick={() => triggerLaunch({ type: "resume" })}
+                      className={styles.btnPrimary}
+                      data-cursor="launch"
+                      aria-label="Résumé"
+                    >
+                      Download Résumé <ArrowUpRight size={16} aria-hidden="true" />
+                    </button>
                   </Magnet>
-                  <Magnet magnetStrength={3}>
+                  <Magnet magnetStrength={3} disabled={isMobile}>
                     <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} data-cursor="visit">
                       LinkedIn <ExternalLink size={15} aria-hidden="true" />
                     </a>
                   </Magnet>
-                  <Magnet magnetStrength={3}>
+                  <Magnet magnetStrength={3} disabled={isMobile}>
                     <a
                       href="mailto:adepu.snehin@gmail.com"
                       className={styles.btnSecondary}
@@ -531,7 +547,7 @@ export default function HomePage() {
                     Open to new-grad SWE · ML · Backend roles. Reach me directly.
                   </p>
                   <div className={styles.contactLinks}>
-                    <Magnet magnetStrength={3}>
+                    <Magnet magnetStrength={3} disabled={isMobile}>
                       <a
                         href="mailto:adepu.snehin@gmail.com"
                         className={styles.contactLink}
@@ -541,19 +557,19 @@ export default function HomePage() {
                         <Mail size={18} aria-hidden="true" />adepu.snehin@gmail.com
                       </a>
                     </Magnet>
-                    <Magnet magnetStrength={3}>
+                    <Magnet magnetStrength={3} disabled={isMobile}>
                       <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="visit">
                         <Code2 size={18} aria-hidden="true" />github.com/snehinadepu24
                       </a>
                     </Magnet>
-                    <Magnet magnetStrength={3}>
+                    <Magnet magnetStrength={3} disabled={isMobile}>
                       <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="visit">
                         <ExternalLink size={18} aria-hidden="true" />linkedin.com/in/snehin-adepu
                       </a>
                     </Magnet>
                   </div>
                   <div className={styles.resumeRow}>
-                    <Magnet magnetStrength={2}>
+                    <Magnet magnetStrength={2} disabled={isMobile}>
                       <button
                         type="button"
                         onClick={() => triggerLaunch({ type: "resume" })}
