@@ -12,6 +12,7 @@ import type { PipelineNode } from "@/components/PipelineScene";
 
 import ScrollReveal from "@/components/ScrollReveal";
 import SplitHeading from "@/components/SplitHeading";
+import MediaCarousel from "@/components/MediaCarousel";
 import { useRocketLaunch } from "@/components/RocketLaunchOverlay";
 import { projects, experience } from "@/content/data";
 import styles from "./page.module.css";
@@ -497,6 +498,17 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            MEDIA & ENGAGEMENTS
+            ══════════════════════════════════════════════════════ */}
+        <section id="media" className={styles.sectionMedia}>
+          <div className="container" style={{ textAlign: "center" }}>
+            <p className="label">Media &amp; Engagements</p>
+            <SplitHeading as="h2" text="Latest Posts & Videos" className={`${styles.sectionTitle} section-heading`} />
+          </div>
+          <MediaCarousel />
         </section>
 
         {/* ══════════════════════════════════════════════════════

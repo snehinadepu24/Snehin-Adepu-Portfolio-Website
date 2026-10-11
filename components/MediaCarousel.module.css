@@ -1,0 +1,106 @@
+/* ── MediaCarousel ─────────────────────────────────────────── */
+
+.carousel {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  padding: 2rem 0;
+  /* fade edges */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+.track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  align-items: center;
+  animation: scrollMedia 45s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover or focus-within (keyboard nav) */
+.track:hover,
+.track:focus-within {
+  animation-play-state: paused;
+}
+
+.trackPaused {
+  animation-play-state: paused;
+}
+
+@keyframes scrollMedia {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 1rem)); }
+}
+
+/* ── Individual card ── */
+.item {
+  flex-shrink: 0;
+  background: rgba(243, 238, 230, 0.03);
+  border: 1px solid rgba(243, 238, 230, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0.75rem;
+  transition: transform 0.25s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+              border-color 0.25s ease;
+}
+
+.item:hover {
+  transform: translateY(-6px);
+  border-color: rgba(196, 92, 38, 0.45);
+}
+
+/* ── YouTube frame ── */
+.ytFrame {
+  display: block;
+  width: 480px;
+  height: 270px;
+  border-radius: 10px;
+  border: none;
+}
+
+/* ── LinkedIn frame ── */
+.liWrapper {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.liFrame {
+  display: block;
+  width: 480px;
+  height: 570px;
+  border: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ytFrame {
+    width: 82vw;
+    height: calc(82vw * 9 / 16);
+  }
+
+  .liFrame {
+    width: 82vw;
+    height: 440px;
+  }
+
+  .track {
+    gap: 1.25rem;
+    animation-duration: 30s;
+  }
+}
