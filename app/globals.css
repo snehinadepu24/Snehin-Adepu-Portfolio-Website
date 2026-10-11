@@ -117,10 +117,18 @@ body {
   outline-offset: 2px;
 }
 
-/* ── Links ── */
+/* ── Links & Buttons ── */
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 /* ── Images ── */

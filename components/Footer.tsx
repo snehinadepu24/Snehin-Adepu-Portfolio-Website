@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { useRocketLaunch } from "@/components/RocketLaunchOverlay";
 import styles from "./Footer.module.css";
 
 const techStack = [
@@ -15,14 +18,15 @@ const links = {
     { label: "Price Feed Pipeline", href: "/work/price-feed-tracker" },
   ],
   connect: [
-    { label: "GitHub",    href: "https://github.com/snehinadepu24",                        external: true },
-    { label: "LinkedIn",  href: "https://www.linkedin.com/in/snehin-adepu-1774b928b/",    external: true },
-    { label: "Email",     href: "mailto:adepu.snehin@gmail.com",                          external: false },
-    { label: "Résumé",    href: "/Snehin-Adepu-Resume.pdf",                               external: true },
+    { label: "GitHub",    href: "https://github.com/snehinadepu24",                        external: true, type: "launch" },
+    { label: "LinkedIn",  href: "https://www.linkedin.com/in/snehin-adepu-1774b928b/",    external: true, type: "launch" },
+    { label: "Email",     href: "mailto:adepu.snehin@gmail.com",                          external: false, type: "launch" },
+    { label: "Résumé",    href: "/Snehin-Adepu-Resume.pdf",                               external: true, type: "resume" },
   ],
 };
 
 export default function Footer() {
+  const { triggerLaunch } = useRocketLaunch();
   return (
     <footer className={styles.footer} role="contentinfo">
       {/* Top rule with gradient */}
@@ -55,7 +59,7 @@ export default function Footer() {
             <ul className={styles.linkList}>
               {links.work.map(l => (
                 <li key={l.href}>
-                  <Link href={l.href} className={styles.footerLink}>
+                  <Link href={l.href} className={styles.footerLink} data-cursor="view">
                     {l.label}
                   </Link>
                 </li>
@@ -69,14 +73,28 @@ export default function Footer() {
             <ul className={styles.linkList}>
               {links.connect.map(l => (
                 <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className={styles.footerLink}
-                    {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  >
-                    {l.label}
-                    {l.external && <ArrowUpRight size={11} aria-hidden="true" className={styles.extIcon} />}
-                  </a>
+                  {l.type === "resume" ? (
+                    <button
+                      type="button"
+                      onClick={() => triggerLaunch({ type: "resume" })}
+                      className={styles.footerLink}
+                      data-cursor="launch"
+                      style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "2px", padding: 0 }}
+                    >
+                      {l.label}
+                      <ArrowUpRight size={11} aria-hidden="true" className={styles.extIcon} />
+                    </button>
+                  ) : (
+                    <a
+                      href={l.href}
+                      className={styles.footerLink}
+                      data-cursor="launch"
+                      {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    >
+                      {l.label}
+                      {l.external && <ArrowUpRight size={11} aria-hidden="true" className={styles.extIcon} />}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

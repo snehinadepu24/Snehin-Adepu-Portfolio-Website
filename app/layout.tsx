@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
+import { RocketLaunchProvider } from "@/components/RocketLaunchOverlay";
 
 /* ── Fonts ─────────────────────────────────────────────────── */
 
@@ -232,13 +234,16 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <CustomCursor />
         {/* Skip to main content — accessibility */}
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <Nav />
-        <main id="main">{children}</main>
-        <Footer />
+        <RocketLaunchProvider>
+          <Nav />
+          <main id="main">{children}</main>
+          <Footer />
+        </RocketLaunchProvider>
       </body>
     </html>
   );

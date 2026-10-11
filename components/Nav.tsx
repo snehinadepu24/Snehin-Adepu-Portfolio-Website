@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Drawer } from "vaul";
+import { useRocketLaunch } from "@/components/RocketLaunchOverlay";
 import styles from "./Nav.module.css";
 
 const navLinks = [
@@ -17,6 +18,7 @@ const navLinks = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { triggerLaunch } = useRocketLaunch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,14 +49,15 @@ export default function Nav() {
             ))}
           </ul>
           <div className={styles.navActions}>
-            <a
-              href="/Snehin-Adepu-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => triggerLaunch({ type: "resume" })}
               className={styles.resumeBtn}
+              data-cursor="launch"
+              aria-label="Download Résumé"
             >
               Résumé
-            </a>
+            </button>
             <span className={styles.availability}>
               Open to new-grad SWE · ML
             </span>
@@ -94,15 +97,17 @@ export default function Nav() {
                         {link.label}
                       </Link>
                     ))}
-                    <a
-                      href="/Snehin-Adepu-Resume.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
                       className={styles.mobileNavLink}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => {
+                        setIsOpen(false);
+                        triggerLaunch({ type: "resume" });
+                      }}
+                      style={{ textAlign: "left", background: "none", border: "none", cursor: "pointer", width: "100%" }}
                     >
                       Résumé
-                    </a>
+                    </button>
                   </nav>
                   <div className={styles.mobileAvailability}>
                     Open to new-grad SWE · ML

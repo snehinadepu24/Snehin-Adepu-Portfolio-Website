@@ -211,14 +211,14 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-12);
+  gap: var(--space-8);
   align-items: center;
 }
 
 @media (min-width: 1024px) {
   .heroContainer {
     grid-template-columns: 5fr 7fr;
-    gap: var(--space-16);
+    gap: var(--space-12);
   }
 }
 
@@ -338,7 +338,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 .statusDot {
@@ -371,11 +371,11 @@
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.03em;
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-4);
 }
 
 .headlineLine {
-  font-size: clamp(3.8rem, 9.5vw, 8rem);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
   display: block;
   color: var(--text-primary);
 }
@@ -385,11 +385,11 @@
 }
 
 .tagline {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
   color: var(--text-secondary);
   max-width: 48ch;
-  line-height: 1.65;
-  margin-bottom: var(--space-10);
+  line-height: 1.55;
+  margin-bottom: var(--space-6);
 }
 
 .taglineAccent {
@@ -401,8 +401,8 @@
 .heroStats {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
-  margin-bottom: var(--space-12);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
   flex-wrap: wrap;
 }
 
@@ -414,7 +414,7 @@
 
 .statVal {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
   color: var(--color-copper);
   line-height: 1;
 }
@@ -429,7 +429,7 @@
 
 .statDivider {
   width: 1px;
-  height: 36px;
+  height: 28px;
   background: var(--border-subtle);
   flex-shrink: 0;
 }
@@ -437,7 +437,7 @@
 /* CTAs */
 .heroCtas {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-3);
   flex-wrap: wrap;
   align-items: center;
 }
@@ -446,11 +446,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-8);
+  padding: var(--space-2) var(--space-6);
   background: var(--color-copper);
   color: var(--color-bone);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -468,11 +468,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-8);
+  padding: var(--space-2) var(--space-6);
   background: transparent;
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -490,7 +490,7 @@
 .heroVisuals {
   position: relative;
   width: 100%;
-  min-height: clamp(380px, 45vw, 560px);
+  min-height: clamp(320px, 38vw, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1198,6 +1198,19 @@
 .aboutImage:hover .profileImg {
   filter: contrast(1.12) brightness(1.0);
   transform: scale(1.04);
+}
+
+.aboutVisuals {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.aboutGlobe {
+  flex: 1 1 240px;
+  max-width: 340px;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

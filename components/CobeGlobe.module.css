@@ -1,0 +1,72 @@
+.globeContainer {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: grab;
+}
+
+.globeContainer:active {
+  cursor: grabbing;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  contain: layout paint size;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.canvasLoaded {
+  opacity: 1;
+}
+
+.globeLabel {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 12px;
+  background: rgba(28, 27, 23, 0.8);
+  border: 1px solid var(--border-subtle, rgba(243, 238, 230, 0.08));
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-copper, #c45c26);
+  box-shadow: 0 0 8px var(--color-copper, #c45c26);
+  animation: pulse 2s infinite;
+}
+
+.labelText {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #8a847a);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.3);
+  }
+}

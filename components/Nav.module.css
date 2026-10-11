@@ -110,6 +110,8 @@
 }
 
 .resumeBtn {
+  background: transparent;
+  cursor: pointer;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 500;
@@ -117,10 +119,12 @@
   color: var(--color-bone);
   border: 1px solid var(--border-subtle);
   padding: var(--space-2) var(--space-4);
+  border-radius: 2px;
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .resumeBtn:hover {
+  background: rgba(196, 92, 38, 0.1);
   border-color: var(--color-copper);
   color: var(--color-copper);
 }

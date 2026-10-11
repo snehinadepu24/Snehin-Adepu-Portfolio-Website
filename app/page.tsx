@@ -11,6 +11,8 @@ import { ArrowUpRight, Mail, ExternalLink, Code2 } from "lucide-react";
 import type { PipelineNode } from "@/components/PipelineScene";
 
 import ScrollReveal from "@/components/ScrollReveal";
+import SplitHeading from "@/components/SplitHeading";
+import { useRocketLaunch } from "@/components/RocketLaunchOverlay";
 import { projects, experience } from "@/content/data";
 import styles from "./page.module.css";
 
@@ -24,6 +26,8 @@ const DecryptedText      = dynamic(() => import("@/components/DecryptedText"),  
 const SpotlightCard      = dynamic(() => import("@/components/SpotlightCard"),      { ssr: false });
 const PipelineScene      = dynamic(() => import("@/components/PipelineScene"),      { ssr: false });
 const LoadBalancer3D     = dynamic(() => import("@/components/LoadBalancer3D"),     { ssr: false });
+const NumberTicker       = dynamic(() => import("@/components/NumberTicker"),       { ssr: false });
+const CobeGlobe          = dynamic(() => import("@/components/CobeGlobe"),          { ssr: false });
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -74,6 +78,7 @@ export default function HomePage() {
   const containerRef   = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const [prefersReduced, setPrefersReduced] = useState(false);
+  const { triggerLaunch } = useRocketLaunch();
 
   // Detect reduced motion preference
   useEffect(() => {
@@ -164,13 +169,13 @@ export default function HomePage() {
 
             {/* Social rail */}
             <div className={styles.heroSocials} role="list" aria-label="Social links">
-              <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="GitHub">
+              <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="GitHub" data-cursor="launch">
                 <Code2 size={15} aria-hidden="true" /><span>GitHub</span>
               </a>
-              <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="LinkedIn" data-cursor="launch">
                 <ExternalLink size={15} aria-hidden="true" /><span>LinkedIn</span>
               </a>
-              <a href="mailto:adepu.snehin@gmail.com" className={styles.socialLink} role="listitem" aria-label="Email">
+              <a href="mailto:adepu.snehin@gmail.com" className={styles.socialLink} role="listitem" aria-label="Email" data-cursor="launch">
                 <Mail size={15} aria-hidden="true" /><span>Email</span>
               </a>
               <div className={styles.socialRailLine} aria-hidden="true" />
@@ -193,27 +198,53 @@ export default function HomePage() {
                   Previously Loomylabs &amp; Alfago.
                 </p>
                 <div className={styles.heroStats}>
-                  <div className={styles.stat}><span className={styles.statVal}>70%+</span><span className={styles.statLabel}>Inference cost cut</span></div>
+                  <div className={styles.stat}>
+                    <span className={styles.statVal}>
+                      <NumberTicker value={70} suffix="%+" delay={0.2} />
+                    </span>
+                    <span className={styles.statLabel}>Inference cost cut</span>
+                  </div>
                   <div className={styles.statDivider} aria-hidden="true" />
-                  <div className={styles.stat}><span className={styles.statVal}>1,000+</span><span className={styles.statLabel}>Concurrent users</span></div>
+                  <div className={styles.stat}>
+                    <span className={styles.statVal}>
+                      <NumberTicker value={1000} suffix="+" delay={0.3} />
+                    </span>
+                    <span className={styles.statLabel}>Concurrent users</span>
+                  </div>
                   <div className={styles.statDivider} aria-hidden="true" />
-                  <div className={styles.stat}><span className={styles.statVal}>50K+</span><span className={styles.statLabel}>Records / day</span></div>
+                  <div className={styles.stat}>
+                    <span className={styles.statVal}>
+                      <NumberTicker value={50} suffix="K+" delay={0.4} />
+                    </span>
+                    <span className={styles.statLabel}>Records / day</span>
+                  </div>
                 </div>
                 <div className={styles.heroCtas}>
                   <Magnet magnetStrength={3}>
-                    <a href="#work" className={styles.btnPrimary}>View Work <ArrowUpRight size={16} aria-hidden="true" /></a>
+                    <a href="#work" className={styles.btnPrimary} data-cursor="view">
+                      View Work <ArrowUpRight size={16} aria-hidden="true" />
+                    </a>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary}>GitHub <Code2 size={15} aria-hidden="true" /></a>
+                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} data-cursor="launch">
+                      LinkedIn <ExternalLink size={15} aria-hidden="true" />
+                    </a>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <a href="mailto:adepu.snehin@gmail.com" className={styles.btnSecondary}>Contact <Mail size={15} aria-hidden="true" /></a>
+                    <button
+                      type="button"
+                      onClick={() => triggerLaunch({ type: "contact" })}
+                      className={styles.btnSecondary}
+                      data-cursor="launch"
+                    >
+                      Contact <Mail size={15} aria-hidden="true" />
+                    </button>
                   </Magnet>
                 </div>
               </div>
 
               {/* Right — morphing brain + frame scrubber overlay */}
-              <div className={styles.heroVisuals} aria-hidden="true">
+              <div className={styles.heroVisuals} aria-hidden="true" data-cursor="drag">
                 {/* 3D behind */}
                 <div className={styles.latticeWrapper}><HeroLattice /></div>
                 <div className={styles.scrubberWrapper}><FrameScrubPortrait /></div>
@@ -232,11 +263,11 @@ export default function HomePage() {
 
             <div className={styles.sectionHeader}>
               <p className="label">Selected Work</p>
-              <h2 className={`${styles.sectionTitle} section-heading`}>Engineering at scale</h2>
+              <SplitHeading as="h2" text="Engineering at scale" className={`${styles.sectionTitle} section-heading`} />
             </div>
 
             {/* ── LLM / RAG Pipeline visual ── */}
-            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`}>
+            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`} data-cursor="drag">
               <div className={styles.pipelineLabel}>
                 <span className={styles.pipelineTag}>LLM · RAG Pipeline</span>
                 <span className={styles.pipelineDesc}>Loomylabs inference architecture — 70%+ cost reduction</span>
@@ -253,7 +284,7 @@ export default function HomePage() {
 
             <div className={styles.workList}>
               {workProjects.map((project, idx) => (
-                <Link key={project.slug} href={`/work/${project.slug}`} className={`${styles.workRow} work-row`}>
+                <Link key={project.slug} href={`/work/${project.slug}`} className={`${styles.workRow} work-row`} data-cursor="view">
                   <div className={styles.workRowNumber}>{String(idx + 1).padStart(2, "0")}</div>
                   <div className={styles.workRowContent}>
                     <div className={styles.workRowTop}>
@@ -296,11 +327,11 @@ export default function HomePage() {
 
             <div className={styles.sectionHeader}>
               <p className="label">Experience</p>
-              <h2 className={`${styles.sectionTitle} section-heading`}>Where I&apos;ve built</h2>
+              <SplitHeading as="h2" text="Where I've built" className={`${styles.sectionTitle} section-heading`} />
             </div>
 
             {/* ── Load Balancer visual ── */}
-            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`}>
+            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`} data-cursor="drag">
               <div className={styles.pipelineLabel}>
                 <span className={styles.pipelineTag}>GCP · Load Balancing</span>
                 <span className={styles.pipelineDesc}>Loomylabs backend — 1,000+ concurrent users handled</span>
@@ -334,7 +365,7 @@ export default function HomePage() {
           <div className="container">
             <div className={styles.sectionHeader}>
               <p className="label">Capabilities</p>
-              <h2 className={`${styles.sectionTitle} section-heading`}>What I work with</h2>
+              <SplitHeading as="h2" text="What I work with" className={`${styles.sectionTitle} section-heading`} />
             </div>
             <div className={styles.capGrid}>
               {capabilities.map((cap) => (
@@ -365,11 +396,11 @@ export default function HomePage() {
 
             <div className={styles.sectionHeader}>
               <p className="label">Lab &amp; Research</p>
-              <h2 className={`${styles.sectionTitle} section-heading`}>Experiments &amp; explorations</h2>
+              <SplitHeading as="h2" text="Experiments & explorations" className={`${styles.sectionTitle} section-heading`} />
             </div>
 
             {/* ── Data pipeline visual ── */}
-            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`}>
+            <div className={`${styles.pipelineWrap} pipeline-canvas-wrap`} data-cursor="drag">
               <div className={styles.pipelineLabel}>
                 <span className={styles.pipelineTag}>Data Pipeline · Redis · S3</span>
                 <span className={styles.pipelineDesc}>Alfago price-feed system — 50,000+ records/day</span>
@@ -394,7 +425,7 @@ export default function HomePage() {
                   <h3 className={styles.labTitle}>{item.title}</h3>
                   <p className={styles.labDesc}>{item.desc}</p>
                   {item.link && (
-                    <a href={item.link} target="_blank" rel="noopener noreferrer" className={styles.labLink}>
+                    <a href={item.link} target="_blank" rel="noopener noreferrer" className={styles.labLink} data-cursor="view">
                       View <ExternalLink size={12} aria-hidden="true" />
                     </a>
                   )}
@@ -403,7 +434,7 @@ export default function HomePage() {
             </div>
 
             <ScrollReveal delay={150}>
-              <Link href="/lab" className={styles.viewAllLink} style={{ marginTop: "3rem", display: "inline-flex" }}>
+              <Link href="/lab" className={styles.viewAllLink} style={{ marginTop: "3rem", display: "inline-flex" }} data-cursor="view">
                 All lab work <ArrowUpRight size={16} aria-hidden="true" />
               </Link>
             </ScrollReveal>
@@ -419,7 +450,7 @@ export default function HomePage() {
               <div className={styles.aboutLeft}>
                 <ScrollReveal>
                   <p className="label">About</p>
-                  <h2 className={`${styles.sectionTitle} section-heading`}>The engineer</h2>
+                  <SplitHeading as="h2" text="The engineer" className={`${styles.sectionTitle} section-heading`} />
                 </ScrollReveal>
               </div>
               <div className={styles.aboutRight}>
@@ -441,8 +472,13 @@ export default function HomePage() {
                   </p>
                 </ScrollReveal>
                 <ScrollReveal delay={200}>
-                  <div className={styles.aboutImage}>
-                    <Image src="/profile.png" alt="Snehin Adepu" width={260} height={260} className={styles.profileImg} />
+                  <div className={styles.aboutVisuals}>
+                    <div className={styles.aboutImage}>
+                      <Image src="/profile.png" alt="Snehin Adepu" width={260} height={260} className={styles.profileImg} />
+                    </div>
+                    <div className={styles.aboutGlobe}>
+                      <CobeGlobe />
+                    </div>
                   </div>
                 </ScrollReveal>
               </div>
@@ -463,34 +499,44 @@ export default function HomePage() {
             <ScrollReveal>
               <div className={styles.contactInner}>
                 <p className="label">Contact</p>
-                <h2 className={`${styles.contactHeadline} section-heading`}>
-                  Let&apos;s build<br />something.
-                </h2>
+                <SplitHeading as="h2" text="Let's build something." className={`${styles.contactHeadline} section-heading`} />
                 <p className={styles.contactSubtitle}>
                   Open to new-grad SWE · ML · Backend roles. Reach me directly.
                 </p>
                 <div className={styles.contactLinks}>
                   <Magnet magnetStrength={3}>
-                    <a href="mailto:adepu.snehin@gmail.com" className={styles.contactLink}>
+                    <button
+                      type="button"
+                      onClick={() => triggerLaunch({ type: "contact" })}
+                      className={styles.contactLink}
+                      data-cursor="launch"
+                      style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+                    >
                       <Mail size={18} aria-hidden="true" />adepu.snehin@gmail.com
-                    </a>
+                    </button>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                    <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
                       <Code2 size={18} aria-hidden="true" />github.com/snehinadepu24
                     </a>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
                       <ExternalLink size={18} aria-hidden="true" />linkedin.com/in/snehin-adepu
                     </a>
                   </Magnet>
                 </div>
                 <div className={styles.resumeRow}>
                   <Magnet magnetStrength={2}>
-                    <a href="/Snehin-Adepu-Resume.pdf" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary}>
+                    <button
+                      type="button"
+                      onClick={() => triggerLaunch({ type: "resume" })}
+                      className={styles.btnPrimary}
+                      data-cursor="launch"
+                      aria-label="Download Résumé"
+                    >
                       Download Résumé <ArrowUpRight size={16} aria-hidden="true" />
-                    </a>
+                    </button>
                   </Magnet>
                 </div>
               </div>

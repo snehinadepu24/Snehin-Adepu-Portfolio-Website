@@ -1,0 +1,94 @@
+.cursorContainer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+/* Center precise dot */
+.cursorDot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background-color: var(--color-copper, #c45c26);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(196, 92, 38, 0.8);
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+/* Outer spring follower */
+.cursorRing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 99999;
+  border: 1.5px solid rgba(196, 92, 38, 0.45);
+  background: rgba(12, 11, 9, 0.15);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  transform: translate(-50%, -50%);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              border-radius 0.25s ease,
+              opacity 0.2s ease;
+}
+
+/* Default ring state */
+.ringDefault {
+  width: 32px;
+  height: 32px;
+}
+
+/* Hovering links/buttons */
+.ringHover {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(196, 92, 38, 0.85);
+  background: rgba(196, 92, 38, 0.12);
+  box-shadow: 0 0 20px rgba(196, 92, 38, 0.25);
+}
+
+/* Contextual badge states */
+.ringBadge {
+  width: auto;
+  min-width: 72px;
+  height: 32px;
+  padding: 0 14px;
+  border-color: var(--color-copper, #c45c26);
+  background: rgba(12, 11, 9, 0.85);
+  box-shadow: 0 4px 20px rgba(196, 92, 38, 0.4);
+}
+
+.cursorBadgeText {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bone, #f3eee6);
+  white-space: nowrap;
+}
+
+@media (pointer: coarse) {
+  .cursorContainer {
+    display: none !important;
+  }
+}
