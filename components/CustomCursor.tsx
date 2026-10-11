@@ -40,6 +40,10 @@ export default function CustomCursor() {
           setHoverState('badge');
           setBadgeText('LAUNCH 🚀');
           return;
+        } else if (cursorType === 'visit') {
+          setHoverState('badge');
+          setBadgeText('VISIT ↗');
+          return;
         } else if (cursorType === 'view') {
           setHoverState('badge');
           setBadgeText('EXPLORE ↗');

@@ -188,13 +188,13 @@ export default function HomePage() {
 
             {/* Social rail */}
             <div className={styles.heroSocials} role="list" aria-label="Social links">
-              <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="GitHub" data-cursor="launch">
+              <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="GitHub" data-cursor="visit">
                 <Code2 size={15} aria-hidden="true" /><span>GitHub</span>
               </a>
-              <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="LinkedIn" data-cursor="launch">
+              <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} role="listitem" aria-label="LinkedIn" data-cursor="visit">
                 <ExternalLink size={15} aria-hidden="true" /><span>LinkedIn</span>
               </a>
-              <a href="mailto:adepu.snehin@gmail.com" className={styles.socialLink} role="listitem" aria-label="Email" data-cursor="launch">
+              <a href="mailto:adepu.snehin@gmail.com" className={styles.socialLink} role="listitem" aria-label="Email" data-cursor="visit">
                 <Mail size={15} aria-hidden="true" /><span>Email</span>
               </a>
               <div className={styles.socialRailLine} aria-hidden="true" />
@@ -245,7 +245,7 @@ export default function HomePage() {
                     </a>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} data-cursor="launch">
+                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.btnSecondary} data-cursor="visit">
                       LinkedIn <ExternalLink size={15} aria-hidden="true" />
                     </a>
                   </Magnet>
@@ -530,12 +530,12 @@ export default function HomePage() {
                       </a>
                     </Magnet>
                     <Magnet magnetStrength={3}>
-                      <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
+                      <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="visit">
                         <Code2 size={18} aria-hidden="true" />github.com/snehinadepu24
                       </a>
                     </Magnet>
                     <Magnet magnetStrength={3}>
-                      <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
+                      <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="visit">
                         <ExternalLink size={18} aria-hidden="true" />linkedin.com/in/snehin-adepu
                       </a>
                     </Magnet>

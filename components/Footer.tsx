@@ -88,7 +88,7 @@ export default function Footer() {
                     <a
                       href={l.href}
                       className={styles.footerLink}
-                      data-cursor="launch"
+                      data-cursor="visit"
                       {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     >
                       {l.label}
@@ -122,6 +122,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.bottomLink}
+              data-cursor="visit"
             >
               GitHub
             </a>
@@ -130,10 +131,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.bottomLink}
+              data-cursor="visit"
             >
               LinkedIn
             </a>
-            <a href="mailto:adepu.snehin@gmail.com" className={styles.bottomLink}>
+            <a href="mailto:adepu.snehin@gmail.com" className={styles.bottomLink} data-cursor="visit">
               Email
             </a>
           </div>
