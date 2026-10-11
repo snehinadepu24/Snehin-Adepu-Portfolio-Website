@@ -113,9 +113,6 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <div className={styles.bottomBar}>
-          <p className={styles.copy}>
-            © {new Date().getFullYear()} Snehin Adepu. Built with Next.js, R3F &amp; GSAP.
-          </p>
           <div className={styles.bottomLinks}>
             <a
               href="https://github.com/snehinadepu24"
