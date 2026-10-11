@@ -21,9 +21,9 @@ export type Experience = {
 export const projects: Project[] = [
   {
     slug: "jansamadhan",
-    title: "JanSamadhan — AI Civic Grievance Platform",
+    title: "JanSamadhan — AI Civic Grievance Platform (Student Project Demo)",
     shortDesc: "AI-powered complaint classification platform with WhatsApp integration.",
-    description: "AI-powered complaint classification platform with multilingual support and WhatsApp integration. Features real-time dashboards for civic authorities. Selected among Top 1000 teams in India Innovates 2026 (Bharat Mandapam, Delhi).",
+    description: "**⚠️ STUDENT PROJECT DEMO** — This is an educational demonstration project. Not affiliated with government entities. AI-powered complaint classification platform with multilingual support and WhatsApp integration. Features real-time dashboards for civic authorities. Selected among Top 1000 teams in India Innovates 2026 (Bharat Mandapam, Delhi).",
     tech: ["AI Classification", "Multilingual NLP", "WhatsApp API", "Dashboards"],
     metrics: [
       { label: "National Rank", value: "Top 1000" },
@@ -105,12 +105,5 @@ export const experience: Experience[] = [
     company: "Alfago Research LLP",
     date: "Oct 2025 – Dec 2025",
     description: "Built pipeline fetching OHLCV data every 5 minutes (50,000+ records/day). Stored data in AWS S3 using Apache Parquet (35% cost reduction, 2× speed). Developed time-series aggregation (1m/5m/1h/1d)."
-  },
-  {
-    id: "aicte",
-    role: "AICTE Internship",
-    company: "TechSaksham (Microsoft & SAP)",
-    date: "Feb 2025 – Mar 2025",
-    description: "Learned ML concepts: supervised learning, neural networks, evaluation. Built real-world AI projects through guided labs. Certified by AICTE, Microsoft & SAP."
   }
 ];
