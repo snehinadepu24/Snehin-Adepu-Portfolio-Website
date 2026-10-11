@@ -38,8 +38,7 @@ interface Particle {
 export function RocketLaunchProvider({ children }: { children: React.ReactNode }) {
   const [isActive, setIsActive] = useState(false);
   const [currentOptions, setCurrentOptions] = useState<LaunchOptions | null>(null);
-  const [statusMessage, setStatusMessage] = useState('IGNITION SEQUENCE ACTIVE');
-  const [isDelivered, setIsDelivered] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('IGNITING THRUSTERS...');
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rocketRef = useRef<HTMLDivElement>(null);
@@ -47,43 +46,8 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
   const particlesRef = useRef<Particle[]>([]);
 
   const triggerLaunch = useCallback((options: LaunchOptions) => {
-    // Check reduced motion — skip animation entirely
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      if (options.onComplete) {
-        options.onComplete();
-      } else if (options.type === 'resume') {
-        window.open('/Snehin-Adepu-Resume.pdf', '_blank');
-      } else if (options.type === 'contact') {
-        const a = document.createElement('a');
-        a.href = 'mailto:adepu.snehin@gmail.com';
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-      return;
-    }
-
-    // Fire the real action SYNCHRONOUSLY here, while still inside the user-gesture
-    // call stack. Use a hidden anchor click — more reliable than window.location.href
-    // for mailto: across all browsers and OS mail client configurations.
-    if (options.type === 'resume') {
-      window.open('/Snehin-Adepu-Resume.pdf', '_blank');
-    } else if (options.type === 'contact') {
-      const a = document.createElement('a');
-      a.href = 'mailto:adepu.snehin@gmail.com';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else if (options.onComplete) {
-      options.onComplete();
-    }
-
-    // Then run the purely cosmetic rocket animation on top
     setCurrentOptions(options);
     setIsActive(true);
-    setIsDelivered(false);
     setStatusMessage('IGNITING THRUSTERS...');
   }, []);
 
@@ -110,54 +74,52 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
     if (!ctx) return;
 
     // Set canvas dimensions
-    const updateSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    updateSize();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     particlesRef.current = [];
     const colors = ['#FF8040', '#C45C26', '#F3EEE6', '#FFAA66', '#8A847A'];
 
-    let startTime = performance.now();
+    const startTime = performance.now();
     let hasDelivered = false;
+    let actionTriggered = false;
 
-    // Rocket physics
-    let rocketY = window.innerHeight - 100; // start near bottom
-    let rocketVy = -2; // initial slow push
-    const rocketAx = -0.55; // upward acceleration
+    // Rocket physics: start near bottom of viewport
+    let rocketY = window.innerHeight - 90;
+    let rocketVy = -2.5;
+    const rocketAy = -0.55; // upward acceleration
 
     const animate = (now: number) => {
       const elapsed = now - startTime;
 
-      // Clear canvas with subtle trail fade
-      ctx.fillStyle = 'rgba(12, 11, 9, 0.25)';
+      // Clear canvas with smooth trail fade
+      ctx.fillStyle = 'rgba(12, 11, 9, 0.22)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Accelerate rocket
-      rocketVy += rocketAx;
+      // Accelerate rocket upward
+      rocketVy += rocketAy;
       rocketY += rocketVy;
 
       const rocketX = window.innerWidth / 2;
       rocket.style.top = `${rocketY}px`;
 
-      // Spawn thruster particles from rocket nozzle
-      if (rocketY > -150) {
-        for (let i = 0; i < 7; i++) {
+      // Spawn thruster flames and sparks from rocket base
+      if (rocketY > -160) {
+        for (let i = 0; i < 8; i++) {
           particlesRef.current.push({
-            x: rocketX + (Math.random() - 0.5) * 16,
-            y: rocketY + 80,
-            vx: (Math.random() - 0.5) * 4,
-            vy: Math.random() * 8 + 3, // blast downward
-            size: Math.random() * 5 + 2,
+            x: rocketX + (Math.random() - 0.5) * 18,
+            y: rocketY + 84,
+            vx: (Math.random() - 0.5) * 4.5,
+            vy: Math.random() * 9 + 4, // blast downward
+            size: Math.random() * 5.5 + 2.5,
             color: colors[Math.floor(Math.random() * colors.length)],
             alpha: 1,
-            decay: Math.random() * 0.03 + 0.015,
+            decay: Math.random() * 0.035 + 0.015,
           });
         }
       }
 
-      // Update and draw particles
+      // Draw and update particle sparks
       for (let i = particlesRef.current.length - 1; i >= 0; i--) {
         const p = particlesRef.current[i];
         p.x += p.vx;
@@ -179,30 +141,53 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
         ctx.restore();
       }
 
-      // Mid-flight payload delivery & confetti trigger
-      if (rocketY < window.innerHeight * 0.35 && !hasDelivered) {
+      // Mid-flight payload delivery & celebratory confetti
+      if (rocketY < window.innerHeight * 0.45 && !hasDelivered) {
         hasDelivered = true;
-        setIsDelivered(true);
 
         const isResume = currentOptions?.type === 'resume';
         setStatusMessage(
           isResume ? 'PAYLOAD DELIVERED • RÉSUMÉ DISPATCHED 🚀' : 'TRANSMISSION SENT • READY TO BUILD 🛰️'
         );
 
-        // Confetti burst
-        confetti({
-          particleCount: 100,
-          spread: 80,
-          origin: { y: 0.4 },
-          colors: ['#C45C26', '#FF8040', '#F3EEE6', '#3ECF6E'],
-          disableForReducedMotion: true,
-        });
-
-        // Action already fired synchronously in triggerLaunch — no duplicate call here
+        // Confetti burst in brand copper & bone palette
+        try {
+          confetti({
+            particleCount: 110,
+            spread: 85,
+            origin: { y: 0.4 },
+            colors: ['#C45C26', '#FF8040', '#F3EEE6', '#3ECF6E'],
+          });
+        } catch (e) {
+          // ignore if canvas not supported
+        }
       }
 
-      // Automatically end when rocket clears screen and celebration finishes
-      if (elapsed > 1800) {
+      // When rocket has completely cleared the screen, open the payload!
+      if (elapsed >= 1400 && !actionTriggered) {
+        actionTriggered = true;
+
+        if (currentOptions?.onComplete) {
+          currentOptions.onComplete();
+        } else if (currentOptions?.type === 'resume') {
+          const link = document.createElement('a');
+          link.href = '/Snehin-Adepu-Resume.pdf';
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else if (currentOptions?.type === 'contact') {
+          const mailLink = document.createElement('a');
+          mailLink.href = 'mailto:adepu.snehin@gmail.com';
+          document.body.appendChild(mailLink);
+          mailLink.click();
+          document.body.removeChild(mailLink);
+        }
+      }
+
+      // Automatically end when celebration finishes
+      if (elapsed > 1850) {
         setIsActive(false);
         return;
       }
@@ -224,7 +209,13 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
       {children}
 
       {isActive && (
-        <div className={styles.overlay} onClick={() => setIsActive(false)} role="dialog" aria-modal="true" aria-label="Rocket Launch Animation">
+        <div
+          className={styles.overlay}
+          onClick={() => setIsActive(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Rocket Launch Animation"
+        >
           <canvas ref={canvasRef} className={styles.canvas} />
 
           {/* HUD Telemetry Banner */}
