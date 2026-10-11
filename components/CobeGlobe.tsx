@@ -15,19 +15,22 @@ export default function CobeGlobe() {
     let currentPhi = 0;
     const currentTheta = 0.25;
     let rafId: number;
+    let isVisible = false; // start paused; resume when in view
+    let resizeTimer = 0;
 
     const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
-      }
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (canvasRef.current) width = canvasRef.current.offsetWidth;
+      }, 120) as unknown as number;
     };
-    window.addEventListener('resize', onResize);
-    onResize();
+    window.addEventListener('resize', onResize, { passive: true });
+    if (canvasRef.current) width = canvasRef.current.offsetWidth;
 
     if (!canvasRef.current) return;
 
     const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
+      devicePixelRatio: Math.min(window.devicePixelRatio, 2),
       width: (width || 300) * 2,
       height: (width || 300) * 2,
       phi: 0,
@@ -37,18 +40,13 @@ export default function CobeGlobe() {
       mapSamples: 14000,
       mapBrightness: 5,
       baseColor: [0.08, 0.07, 0.06],
-      markerColor: [0.77, 0.36, 0.15], // #C45C26
+      markerColor: [0.77, 0.36, 0.15],
       glowColor: [0.77, 0.36, 0.15],
       markers: [
-        // Hyderabad (Home base)
         { location: [17.385, 78.4867], size: 0.08 },
-        // Indianapolis / Eli Lilly HQ
         { location: [39.7684, -86.1581], size: 0.06 },
-        // San Francisco / Bay Area
         { location: [37.7749, -122.4194], size: 0.05 },
-        // London
         { location: [51.5074, -0.1278], size: 0.05 },
-        // Tokyo
         { location: [35.6762, 139.6503], size: 0.05 },
       ],
     });
@@ -61,20 +59,31 @@ export default function CobeGlobe() {
         pointerInteractionMovement.current *= 0.92;
       }
 
-      globe.update({
-        phi: currentPhi,
-        width: (width || 300) * 2,
-        height: (width || 300) * 2,
-      });
+      if (isVisible) {
+        globe.update({
+          phi: currentPhi,
+          width: (width || 300) * 2,
+          height: (width || 300) * 2,
+        });
+      }
 
       rafId = requestAnimationFrame(animate);
     };
 
-    rafId = requestAnimationFrame(animate);
-    setLoaded(true);
+    // Only start rAF once in view
+    const obs = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !rafId) {
+        rafId = requestAnimationFrame(animate);
+        setLoaded(true);
+      }
+    }, { threshold: 0.1 });
+    if (canvasRef.current) obs.observe(canvasRef.current.parentElement ?? canvasRef.current);
 
     return () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(resizeTimer);
+      obs.disconnect();
       globe.destroy();
       window.removeEventListener('resize', onResize);
     };

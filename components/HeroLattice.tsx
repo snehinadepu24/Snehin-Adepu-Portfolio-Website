@@ -165,6 +165,8 @@ function NeuralConstellation() {
   const { viewport } = useThree();
   const responsiveScale = Math.min(1, Math.max(0.75, viewport.width / 7.2));
   const dummyMatrix = useMemo(() => new THREE.Matrix4(), []);
+  // Pre-allocated scratch vector — avoids heap allocation inside useFrame
+  const _scratchScale = useMemo(() => new THREE.Vector3(), []);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -176,7 +178,7 @@ function NeuralConstellation() {
     };
     checkDevice();
     const onResize = () => checkDevice();
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize, { passive: true });
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
@@ -243,7 +245,7 @@ function NeuralConstellation() {
 
         const pulseScale = pulse.isCore ? 1.35 : 1.0;
         dummyMatrix.makeTranslation(currX, currY, currZ);
-        dummyMatrix.scale(new THREE.Vector3(pulseScale, pulseScale, pulseScale));
+        dummyMatrix.scale(_scratchScale.set(pulseScale, pulseScale, pulseScale));
         pulseInstanced.current!.setMatrixAt(i, dummyMatrix);
       });
       pulseInstanced.current.instanceMatrix.needsUpdate = true;
@@ -447,7 +449,7 @@ export default function HeroLattice() {
     // Detect mobile for camera adjustments
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener("resize", checkMobile, { passive: true });
 
     return () => {
       mq.removeEventListener("change", h);

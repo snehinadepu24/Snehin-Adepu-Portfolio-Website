@@ -70,3 +70,12 @@
     transform: scale(1.3);
   }
 }
+
+@media (max-width: 640px) {
+  .globeLabel {
+    padding: 3px 8px;
+  }
+  .labelText {
+    font-size: 0.58rem;
+  }
+}

@@ -56,7 +56,8 @@ export default function SplitHeading({
           <motion.span
             key={`${word}-${i}`}
             variants={wordVariants}
-            style={{ display: 'inline-block', willChange: 'transform, opacity' }}
+            // willChange only while animating — cleared after to free compositing layers
+            style={{ display: 'inline-block', willChange: isInView ? 'auto' : 'transform, opacity' }}
           >
             {word}
           </motion.span>

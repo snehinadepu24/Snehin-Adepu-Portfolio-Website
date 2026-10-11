@@ -47,18 +47,40 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
   const particlesRef = useRef<Particle[]>([]);
 
   const triggerLaunch = useCallback((options: LaunchOptions) => {
-    // Check reduced motion
+    // Check reduced motion — skip animation entirely
     if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       if (options.onComplete) {
         options.onComplete();
       } else if (options.type === 'resume') {
         window.open('/Snehin-Adepu-Resume.pdf', '_blank');
       } else if (options.type === 'contact') {
-        window.location.href = 'mailto:adepu.snehin@gmail.com';
+        const a = document.createElement('a');
+        a.href = 'mailto:adepu.snehin@gmail.com';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
       return;
     }
 
+    // Fire the real action SYNCHRONOUSLY here, while still inside the user-gesture
+    // call stack. Use a hidden anchor click — more reliable than window.location.href
+    // for mailto: across all browsers and OS mail client configurations.
+    if (options.type === 'resume') {
+      window.open('/Snehin-Adepu-Resume.pdf', '_blank');
+    } else if (options.type === 'contact') {
+      const a = document.createElement('a');
+      a.href = 'mailto:adepu.snehin@gmail.com';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else if (options.onComplete) {
+      options.onComplete();
+    }
+
+    // Then run the purely cosmetic rocket animation on top
     setCurrentOptions(options);
     setIsActive(true);
     setIsDelivered(false);
@@ -176,14 +198,7 @@ export function RocketLaunchProvider({ children }: { children: React.ReactNode }
           disableForReducedMotion: true,
         });
 
-        // Trigger action
-        if (currentOptions?.onComplete) {
-          currentOptions.onComplete();
-        } else if (isResume) {
-          window.open('/Snehin-Adepu-Resume.pdf', '_blank');
-        } else if (currentOptions?.type === 'contact') {
-          window.location.href = 'mailto:adepu.snehin@gmail.com';
-        }
+        // Action already fired synchronously in triggerLaunch — no duplicate call here
       }
 
       // Automatically end when rocket clears screen and celebration finishes

@@ -93,44 +93,60 @@ export default function HomePage() {
   useGSAP(() => {
     if (prefersReduced) return;
 
-    // Clip-path curtain reveal on headings
-    gsap.utils.toArray<HTMLElement>(".section-heading").forEach((el) => {
-      gsap.fromTo(el,
-        { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", y: 24, opacity: 0 },
-        { clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)", y: 0, opacity: 1,
-          duration: 1, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 88%" } }
-      );
+    // Batch headings — one ScrollTrigger for the group instead of one per element
+    ScrollTrigger.batch(".section-heading", {
+      start: "top 88%",
+      onEnter: (els) => {
+        gsap.fromTo(els,
+          { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", y: 24, opacity: 0 },
+          { clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)", y: 0, opacity: 1,
+            duration: 1, ease: "power4.out", stagger: 0.1 }
+        );
+      },
+      once: true,
     });
 
-    // Work rows stagger up
-    gsap.utils.toArray<HTMLElement>(".work-row").forEach((row, i) => {
-      gsap.fromTo(row, { y: 70, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.85, ease: "power3.out",
-          scrollTrigger: { trigger: row, start: "top 90%" }, delay: i * 0.09 });
+    // Work rows stagger up — batched
+    ScrollTrigger.batch(".work-row", {
+      start: "top 90%",
+      onEnter: (els) => {
+        gsap.fromTo(els, { y: 70, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.85, ease: "power3.out", stagger: 0.09 });
+      },
+      once: true,
     });
 
-    // Experience items slide from left
-    gsap.utils.toArray<HTMLElement>(".exp-item").forEach((item, i) => {
-      gsap.fromTo(item, { x: -50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: item, start: "top 87%" }, delay: i * 0.06 });
+    // Experience items slide from left — batched
+    ScrollTrigger.batch(".exp-item", {
+      start: "top 87%",
+      onEnter: (els) => {
+        gsap.fromTo(els, { x: -50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.06 });
+      },
+      once: true,
     });
 
-    // Cap cards scale up
-    gsap.utils.toArray<HTMLElement>(".cap-item").forEach((item, i) => {
-      gsap.fromTo(item, { y: 40, scale: 0.95, opacity: 0 },
-        { y: 0, scale: 1, opacity: 1, duration: 0.65, ease: "power2.out",
-          scrollTrigger: { trigger: item, start: "top 90%" }, delay: i * 0.08 });
+    // Cap cards scale up — batched
+    ScrollTrigger.batch(".cap-item", {
+      start: "top 90%",
+      onEnter: (els) => {
+        gsap.fromTo(els, { y: 40, scale: 0.95, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 0.65, ease: "power2.out", stagger: 0.08 });
+      },
+      once: true,
     });
 
-    // Lab cards stagger from right
-    gsap.utils.toArray<HTMLElement>(".lab-card").forEach((card, i) => {
-      gsap.fromTo(card, { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.75, ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 90%" }, delay: i * 0.1 });
+    // Lab cards stagger from right — batched
+    ScrollTrigger.batch(".lab-card", {
+      start: "top 90%",
+      onEnter: (els) => {
+        gsap.fromTo(els, { x: 40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.75, ease: "power3.out", stagger: 0.1 });
+      },
+      once: true,
     });
 
-    // Section parallax backgrounds
+    // Section parallax backgrounds — scrub (must stay per-element for scrub)
     gsap.utils.toArray<HTMLElement>(".parallax-section").forEach((sec) => {
       const bg = sec.querySelector<HTMLElement>(".section-bg");
       if (!bg) return;
@@ -140,11 +156,14 @@ export default function HomePage() {
       );
     });
 
-    // Pipeline scene fade in
-    gsap.utils.toArray<HTMLElement>(".pipeline-canvas-wrap").forEach((el) => {
-      gsap.fromTo(el, { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%" } });
+    // Pipeline scene fade in — batched
+    ScrollTrigger.batch(".pipeline-canvas-wrap", {
+      start: "top 85%",
+      onEnter: (els) => {
+        gsap.fromTo(els, { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1, ease: "power3.out" });
+      },
+      once: true,
     });
   }, { scope: containerRef, dependencies: [prefersReduced] });
 
@@ -231,14 +250,13 @@ export default function HomePage() {
                     </a>
                   </Magnet>
                   <Magnet magnetStrength={3}>
-                    <button
-                      type="button"
-                      onClick={() => triggerLaunch({ type: "contact" })}
+                    <a
+                      href="mailto:adepu.snehin@gmail.com"
                       className={styles.btnSecondary}
                       data-cursor="launch"
                     >
                       Contact <Mail size={15} aria-hidden="true" />
-                    </button>
+                    </a>
                   </Magnet>
                 </div>
               </div>
@@ -450,7 +468,12 @@ export default function HomePage() {
               <div className={styles.aboutLeft}>
                 <ScrollReveal>
                   <p className="label">About</p>
-                  <SplitHeading as="h2" text="The engineer" className={`${styles.sectionTitle} section-heading`} />
+                  <SplitHeading as="h2" text="The Engineer" className={`${styles.sectionTitle} section-heading`} />
+                </ScrollReveal>
+                <ScrollReveal delay={150}>
+                  <div className={styles.aboutImage}>
+                    <Image src="/profile.png" alt="Snehin Adepu" width={260} height={260} className={styles.profileImg} />
+                  </div>
                 </ScrollReveal>
               </div>
               <div className={styles.aboutRight}>
@@ -471,16 +494,6 @@ export default function HomePage() {
                     thinking about system design more than is healthy.
                   </p>
                 </ScrollReveal>
-                <ScrollReveal delay={200}>
-                  <div className={styles.aboutVisuals}>
-                    <div className={styles.aboutImage}>
-                      <Image src="/profile.png" alt="Snehin Adepu" width={260} height={260} className={styles.profileImg} />
-                    </div>
-                    <div className={styles.aboutGlobe}>
-                      <CobeGlobe />
-                    </div>
-                  </div>
-                </ScrollReveal>
               </div>
             </div>
           </div>
@@ -496,51 +509,72 @@ export default function HomePage() {
             </div>
           )}
           <div className="container">
-            <ScrollReveal>
-              <div className={styles.contactInner}>
-                <p className="label">Contact</p>
-                <SplitHeading as="h2" text="Let's build something." className={`${styles.contactHeadline} section-heading`} />
-                <p className={styles.contactSubtitle}>
-                  Open to new-grad SWE · ML · Backend roles. Reach me directly.
-                </p>
-                <div className={styles.contactLinks}>
-                  <Magnet magnetStrength={3}>
-                    <button
-                      type="button"
-                      onClick={() => triggerLaunch({ type: "contact" })}
-                      className={styles.contactLink}
-                      data-cursor="launch"
-                      style={{ background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
-                    >
-                      <Mail size={18} aria-hidden="true" />adepu.snehin@gmail.com
-                    </button>
-                  </Magnet>
-                  <Magnet magnetStrength={3}>
-                    <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
-                      <Code2 size={18} aria-hidden="true" />github.com/snehinadepu24
-                    </a>
-                  </Magnet>
-                  <Magnet magnetStrength={3}>
-                    <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
-                      <ExternalLink size={18} aria-hidden="true" />linkedin.com/in/snehin-adepu
-                    </a>
-                  </Magnet>
+            <div className={styles.contactGrid}>
+              {/* Left Column: Contact info & CTAs */}
+              <ScrollReveal>
+                <div className={styles.contactInner}>
+                  <p className="label">Contact</p>
+                  <SplitHeading as="h2" text="Let's build something." className={`${styles.contactHeadline} section-heading`} />
+                  <p className={styles.contactSubtitle}>
+                    Open to new-grad SWE · ML · Backend roles. Reach me directly.
+                  </p>
+                  <div className={styles.contactLinks}>
+                    <Magnet magnetStrength={3}>
+                      <a
+                        href="mailto:adepu.snehin@gmail.com"
+                        className={styles.contactLink}
+                        data-cursor="launch"
+                        style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+                      >
+                        <Mail size={18} aria-hidden="true" />adepu.snehin@gmail.com
+                      </a>
+                    </Magnet>
+                    <Magnet magnetStrength={3}>
+                      <a href="https://github.com/snehinadepu24" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
+                        <Code2 size={18} aria-hidden="true" />github.com/snehinadepu24
+                      </a>
+                    </Magnet>
+                    <Magnet magnetStrength={3}>
+                      <a href="https://www.linkedin.com/in/snehin-adepu-1774b928b/" target="_blank" rel="noopener noreferrer" className={styles.contactLink} data-cursor="launch">
+                        <ExternalLink size={18} aria-hidden="true" />linkedin.com/in/snehin-adepu
+                      </a>
+                    </Magnet>
+                  </div>
+                  <div className={styles.resumeRow}>
+                    <Magnet magnetStrength={2}>
+                      <button
+                        type="button"
+                        onClick={() => triggerLaunch({ type: "resume" })}
+                        className={styles.btnPrimary}
+                        data-cursor="launch"
+                        aria-label="Download Résumé"
+                      >
+                        Download Résumé <ArrowUpRight size={16} aria-hidden="true" />
+                      </button>
+                    </Magnet>
+                  </div>
                 </div>
-                <div className={styles.resumeRow}>
-                  <Magnet magnetStrength={2}>
-                    <button
-                      type="button"
-                      onClick={() => triggerLaunch({ type: "resume" })}
-                      className={styles.btnPrimary}
-                      data-cursor="launch"
-                      aria-label="Download Résumé"
-                    >
-                      Download Résumé <ArrowUpRight size={16} aria-hidden="true" />
-                    </button>
-                  </Magnet>
+              </ScrollReveal>
+
+              {/* Right Column: 3D Globe with contextual availability */}
+              <ScrollReveal delay={150}>
+                <div className={styles.contactGlobeCard}>
+                  <div className={styles.globeCardHeader}>
+                    <span className={styles.globeCardLabel}>Global Availability</span>
+                    <span className={styles.globeStatusBadge}>
+                      <span className={styles.globeLiveDot} />
+                      Worldwide Relocation &amp; Remote
+                    </span>
+                  </div>
+                  <p className={styles.globeCardDescription}>
+                    Based in <strong className={styles.aboutAccent}>Hyderabad, India</strong> (17.38° N, 78.48° E) — open to high-impact SWE, ML &amp; Backend engineering roles worldwide.
+                  </p>
+                  <div className={styles.globeCanvasWrap}>
+                    <CobeGlobe />
+                  </div>
                 </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            </div>
           </div>
         </section>
 

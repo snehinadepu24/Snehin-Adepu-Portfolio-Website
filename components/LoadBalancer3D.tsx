@@ -46,6 +46,24 @@ function createParticle(): RequestParticle {
   };
 }
 
+// Module-level constants — stable references, no per-render allocation
+const ENTRY_POS = new THREE.Vector3(-4.2, 0, 0);
+const LB_POS    = new THREE.Vector3( 0.0, 0, 0);
+const SERVER_VECS = SERVER_POSITIONS.map(p => new THREE.Vector3(...p));
+
+const ENTRY_TO_LB = new THREE.QuadraticBezierCurve3(
+  ENTRY_POS,
+  new THREE.Vector3(-2.1, 0.45, 0.3),
+  LB_POS
+);
+const LB_TO_SERVER = SERVER_VECS.map(sv =>
+  new THREE.QuadraticBezierCurve3(
+    LB_POS,
+    new THREE.Vector3(1.65, (sv.y + LB_POS.y) / 2 + 0.25, 0.2),
+    sv
+  )
+);
+
 function SceneContent() {
   const groupRef     = useRef<THREE.Group>(null);
   const instanceRef  = useRef<THREE.InstancedMesh>(null);
@@ -84,23 +102,8 @@ function SceneContent() {
   const serverLoad = useRef([0.4, 0.6, 0.3]);
   const serverMeshes = useRef<(THREE.Mesh | null)[]>([null, null, null]);
   const dummy = useMemo(() => new THREE.Object3D(), []);
-
-  // Entry point — left side
-  const entryPos  = new THREE.Vector3(-4.2, 0, 0);
-  // Load balancer
-  const lbPos     = new THREE.Vector3( 0.0, 0, 0);
-  // Server positions
-  const serverVecs = SERVER_POSITIONS.map(p => new THREE.Vector3(...p));
-
-  const entryToLB = useMemo(() =>
-    new THREE.QuadraticBezierCurve3(entryPos, new THREE.Vector3(-2.1, 0.45, 0.3), lbPos),
-    []
-  );
-  const lbToServer = useMemo(() =>
-    serverVecs.map(sv =>
-      new THREE.QuadraticBezierCurve3(lbPos, new THREE.Vector3(1.65, (sv.y + lbPos.y) / 2 + 0.25, 0.2), sv)
-    ), []
-  );
+  // Pre-allocated scratch vector for scale
+  const _scaleVec = useRef(new THREE.Vector3()).current;
 
   useFrame((_, delta) => {
     if (!groupRef.current || !instanceRef.current) return;
@@ -119,7 +122,7 @@ function SceneContent() {
           p.speed = 0.6 + Math.random() * 0.5;
           serverLoad.current[p.targetServer] = Math.min(1, serverLoad.current[p.targetServer] + 0.08);
         }
-        pos = entryToLB.getPoint(Math.min(p.t, 1));
+        pos = ENTRY_TO_LB.getPoint(Math.min(p.t, 1));
       } else {
         if (p.t >= 1) {
           p.phase = "toLB";
@@ -127,7 +130,7 @@ function SceneContent() {
           p.speed = 0.5 + Math.random() * 0.6;
           p.targetServer = Math.floor(Math.random() * 3);
         }
-        pos = lbToServer[p.targetServer].getPoint(Math.min(p.t, 1));
+        pos = LB_TO_SERVER[p.targetServer].getPoint(Math.min(p.t, 1));
       }
 
       dummy.position.copy(pos);
@@ -147,8 +150,8 @@ function SceneContent() {
   });
 
   const pathPoints = {
-    entryToLB: entryToLB.getPoints(35),
-    lbToServer: lbToServer.map(c => c.getPoints(35)),
+    entryToLB: ENTRY_TO_LB.getPoints(35),
+    lbToServer: LB_TO_SERVER.map(c => c.getPoints(35)),
   };
 
   return (
@@ -275,7 +278,7 @@ export default function LoadBalancer3D({ height = "400px" }: { height?: string }
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener("resize", checkMobile, { passive: true });
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 

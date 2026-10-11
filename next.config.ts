@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   experimental: {
     // Tells the bundler to tree-shake only the used exports from these
     // large packages — reduces per-chunk size and speeds up compilation
-    optimizePackageImports: ["lucide-react", "motion", "@react-three/drei"],
+    optimizePackageImports: ["lucide-react", "motion", "@react-three/drei", "three"],
   },
 };
 

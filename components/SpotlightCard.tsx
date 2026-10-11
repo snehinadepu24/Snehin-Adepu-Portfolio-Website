@@ -109,6 +109,7 @@ const SpotlightCard = ({
     const tick = (now: number) => {
       raf = 0;
       if (!alive) return;
+      if (document.hidden) return; // tab backgrounded — skip frame
       const s = settingsRef.current;
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
@@ -151,8 +152,20 @@ const SpotlightCard = ({
     const onDown = (e: PointerEvent) => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; state.pressed = true; wake(); };
     const onUp = (e: PointerEvent) => { if (e.pointerType !== 'mouse') pointer.active = false; state.pressed = false; wake(); };
 
-    const obs = new IntersectionObserver(entries => { state.visible = entries.some(e => e.isIntersecting); if (state.visible) wake(); });
+    // Use a meaningful threshold so cards only animate when substantially visible
+    const obs = new IntersectionObserver(
+      entries => {
+        state.visible = entries.some(e => e.isIntersecting);
+        if (state.visible) wake();
+      },
+      { threshold: 0.2 }
+    );
     obs.observe(root);
+
+    // Also pause when the tab is hidden
+    const onVisChange = () => { if (!document.hidden && state.visible) wake(); };
+    document.addEventListener('visibilitychange', onVisChange);
+
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
     window.addEventListener('pointercancel', onUp);
@@ -164,6 +177,7 @@ const SpotlightCard = ({
       alive = false;
       cancelAnimationFrame(raf);
       obs.disconnect();
+      document.removeEventListener('visibilitychange', onVisChange);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);

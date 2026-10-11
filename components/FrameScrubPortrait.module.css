@@ -22,6 +22,8 @@
   );
   animation: borderSpin 8s linear infinite;
   filter: blur(1px);
+  will-change: transform;
+  contain: layout paint;
 }
 
 @keyframes borderSpin {
@@ -41,6 +43,8 @@
   );
   animation: glowPulse 3.5s ease-in-out infinite alternate;
   pointer-events: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 @keyframes glowPulse {
@@ -132,6 +136,8 @@
 .socketPulse {
   fill: rgba(255, 128, 64, 0.25);
   animation: socketGlow 2s ease-in-out infinite alternate;
+  transform-origin: center;
+  transform-box: fill-box;
 }
 
 .socketCore {
@@ -139,8 +145,8 @@
 }
 
 @keyframes socketGlow {
-  0%   { r: 2.0; opacity: 0.3; }
-  100% { r: 3.2; opacity: 0.8; }
+  0%   { transform: scale(0.8); opacity: 0.3; }
+  100% { transform: scale(1.3); opacity: 0.8; }
 }
 
 /* ── Deep Learning Telemetry Badge ─────────────────────────── */

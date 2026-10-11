@@ -1200,19 +1200,6 @@
   transform: scale(1.04);
 }
 
-.aboutVisuals {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  margin-top: var(--space-8);
-  flex-wrap: wrap;
-}
-
-.aboutGlobe {
-  flex: 1 1 240px;
-  max-width: 340px;
-}
-
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CONTACT
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1236,9 +1223,23 @@
   transform: rotate(180deg);
 }
 
-.contactInner {
+.contactGrid {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .contactGrid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--space-16);
+  }
+}
+
+.contactInner {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -1291,6 +1292,77 @@
   margin-top: var(--space-8);
   padding-top: var(--space-8);
   border-top: 1px solid var(--border-subtle);
+}
+
+/* ── Contact Right Globe Card ── */
+.contactGlobeCard {
+  padding: var(--space-6);
+  background: rgba(20, 19, 16, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  transition: border-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.contactGlobeCard:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 16px 48px rgba(196, 92, 38, 0.15);
+}
+
+.globeCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.globeCardLabel {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-copper);
+  font-weight: 600;
+}
+
+.globeStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.globeLiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3ecf6e;
+  box-shadow: 0 0 8px #3ecf6e;
+  animation: pulse 2s infinite;
+}
+
+.globeCardDescription {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.globeCanvasWrap {
+  width: 100%;
+  max-width: 380px;
+  margin: var(--space-2) auto 0;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1579,6 +1651,19 @@
   .contactLink {
     font-size: 0.85rem;
   }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .contactGlobeCard {
+    padding: var(--space-4);
+  }
+
+  .globeCanvasWrap {
+    max-width: 280px;
+  }
 }
 
 /* ── Ultra-narrow screens (<= 480px) ── */
@@ -1642,6 +1727,10 @@
   .latticeWrapper {
     width: 100vw;
     height: 100vw;
+  }
+
+  .globeCanvasWrap {
+    max-width: 240px;
   }
 }
 

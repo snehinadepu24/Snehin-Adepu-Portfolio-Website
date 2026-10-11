@@ -25,6 +25,7 @@ export default function ScrollReveal({
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -34,13 +35,16 @@ export default function ScrollReveal({
         if (entry.isIntersecting) {
           setVisible(true);
           observer.unobserve(el);
+          // Clear willChange after animation finishes to free compositing layer
+          const t = setTimeout(() => setDone(true), duration + delay + 50);
+          return () => clearTimeout(t);
         }
       },
       { threshold }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [threshold]);
+  }, [threshold, duration, delay]);
 
   const translateMap = {
     up: `0, ${distance}`,
@@ -52,8 +56,9 @@ export default function ScrollReveal({
   const baseStyle: CSSProperties = {
     opacity: visible ? 1 : 0,
     transform: visible ? 'translate(0, 0)' : `translate(${translateMap[direction]})`,
-    transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-    willChange: 'opacity, transform',
+    transition: done ? 'none' : `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+    // willChange only while animating; 'auto' once settled frees GPU compositing memory
+    willChange: done ? 'auto' : 'opacity, transform',
   };
 
   return (

@@ -112,7 +112,8 @@ export default function Aurora({
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
+    // antialias: false — Aurora is a smooth gradient; MSAA costs GPU memory for no visual gain
+    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: false });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -121,12 +122,17 @@ export default function Aurora({
 
     let program: Program | undefined;
 
+    // Debounced resize — avoids layout thrash on every resize event
+    let resizeTimer = 0;
     function resize() {
       if (!ctn) return;
-      renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
-      if (program) program.uniforms.uResolution.value = [ctn.offsetWidth, ctn.offsetHeight];
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
+        if (program) program.uniforms.uResolution.value = [ctn.offsetWidth, ctn.offsetHeight];
+      }, 120) as unknown as number;
     }
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) delete geometry.attributes.uv;
@@ -134,13 +140,17 @@ export default function Aurora({
     const toStopArr = (stops: string[]) =>
       stops.map(hex => { const c = new Color(hex); return [c.r, c.g, c.b]; });
 
+    // Cache stop array to avoid rebuilding it every frame when props haven't changed
+    let cachedStops = toStopArr(colorStops);
+    let lastStopsKey = colorStops.join(',');
+
     program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
-        uColorStops: { value: toStopArr(colorStops) },
+        uColorStops: { value: cachedStops },
         uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
         uBlend: { value: blend },
         uLightMode: { value: 0 },
@@ -151,22 +161,40 @@ export default function Aurora({
     ctn.appendChild(gl.canvas);
 
     let animId = 0;
+    let isVisible = true;
+
     const update = (t: number) => {
       animId = requestAnimationFrame(update);
+      if (!isVisible) return; // pause rendering when off-screen
       const p = propsRef.current;
       if (program) {
         program.uniforms.uTime.value = t * 0.001 * (p.speed ?? 1);
         program.uniforms.uAmplitude.value = p.amplitude ?? 1;
         program.uniforms.uBlend.value = p.blend ?? 0.6;
-        program.uniforms.uColorStops.value = toStopArr(p.colorStops ?? colorStops);
+        // Only rebuild stop array when colorStops actually changed
+        const stopsKey = (p.colorStops ?? colorStops).join(',');
+        if (stopsKey !== lastStopsKey) {
+          cachedStops = toStopArr(p.colorStops ?? colorStops);
+          lastStopsKey = stopsKey;
+        }
+        program.uniforms.uColorStops.value = cachedStops;
         renderer.render({ scene: mesh });
       }
     };
+
+    // Pause rAF when Aurora scrolls out of view
+    const obs = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    }, { threshold: 0 });
+    obs.observe(ctn);
+
     animId = requestAnimationFrame(update);
     resize();
 
     return () => {
       cancelAnimationFrame(animId);
+      clearTimeout(resizeTimer);
+      obs.disconnect();
       window.removeEventListener('resize', resize);
       if (ctn && gl.canvas.parentNode === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();

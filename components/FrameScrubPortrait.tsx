@@ -11,68 +11,99 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+// NOTE: fraction state removed — all scroll-driven updates are now imperative
+// (direct DOM mutations) to avoid 60 React re-renders/second while scrolling.
 import styles from "./FrameScrubPortrait.module.css";
 
 const TOTAL_FRAMES = 50;
 const SOCKET_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 
 export default function FrameScrubPortrait() {
-  const imgRef  = useRef<HTMLImageElement>(null);
-  const ringRef = useRef<SVGCircleElement>(null);
-  const [frames, setFrames]     = useState<string[]>([]);
-  const [fraction, setFraction] = useState(0);
+  const imgRef         = useRef<HTMLImageElement>(null);
+  const ringRef        = useRef<SVGCircleElement>(null);
+  const titleRef       = useRef<HTMLSpanElement>(null);
+  const lossRef        = useRef<HTMLSpanElement>(null);
+  const scrollHintRef  = useRef<HTMLDivElement>(null);
+  const framesRef      = useRef<string[]>([]);
+  const fractionRef    = useRef(0);
+  // Keep a tiny render-state just for the initial mount (shows frame 0 src)
+  const [ready, setReady] = useState(false);
 
-  // Preload frames
+  // Preload frames — stagger to not block the main thread at startup
   useEffect(() => {
     const urls = Array.from({ length: TOTAL_FRAMES }, (_, i) =>
       `/frames/frame_${String(i + 1).padStart(4, "0")}.jpg`
     );
-    setFrames(urls);
-    urls.slice(0, 18).forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
+    framesRef.current = urls;
+    setReady(true);
+
+    // Preload first 18 immediately
+    urls.slice(0, 18).forEach((src) => { const img = new Image(); img.src = src; });
+    // Defer the rest
     setTimeout(() => {
-      urls.slice(18).forEach((src) => {
-        const img = new Image();
-        img.src = src;
-      });
-    }, 500);
+      urls.slice(18).forEach((src) => { const img = new Image(); img.src = src; });
+    }, 600);
   }, []);
 
-  // Scroll listener mapped to 300vh runway
+  // Scroll listener — fully imperative, zero React state updates on scroll
   useEffect(() => {
-    if (frames.length === 0) return;
+    if (!ready) return;
     const circumference = 2 * Math.PI * 48;
 
-    const update = () => {
+    // Cache layout reads — recompute only on resize, not every scroll tick
+    let runwayTop    = 0;
+    let scrollZone   = 1;
+
+    const cacheLayout = () => {
       const runway = document.getElementById("hero-runway");
       if (!runway) return;
+      runwayTop  = runway.offsetTop;
+      scrollZone = Math.max(runway.offsetHeight - window.innerHeight, 1);
+    };
+    cacheLayout();
 
-      const runwayTop    = runway.offsetTop;
-      const runwayHeight = runway.offsetHeight;
-      const scrollZone   = Math.max(runwayHeight - window.innerHeight, 1);
-      const scrolled     = Math.max(window.scrollY - runwayTop, 0);
-      const frac         = Math.min(Math.max(scrolled / scrollZone, 0), 1);
+    const onResize = () => cacheLayout();
+    window.addEventListener("resize", onResize, { passive: true });
 
-      setFraction(frac);
+    const update = () => {
+      const scrolled = Math.max(window.scrollY - runwayTop, 0);
+      const frac     = Math.min(Math.max(scrolled / scrollZone, 0), 1);
+      fractionRef.current = frac;
 
+      // Frame swap
       const idx = Math.min(Math.floor(frac * (TOTAL_FRAMES - 1)), TOTAL_FRAMES - 1);
-      if (imgRef.current) {
-        imgRef.current.src = frames[idx] ?? frames[0];
-      }
+      if (imgRef.current) imgRef.current.src = framesRef.current[idx] ?? framesRef.current[0];
+
+      // Progress ring
       if (ringRef.current) {
-        ringRef.current.style.strokeDashoffset = String(circumference - frac * circumference);
+        ringRef.current.style.strokeDashoffset = String(circumference * (1 - frac));
+      }
+
+      // Telemetry badge — direct DOM mutation, no re-render
+      if (titleRef.current) {
+        const frameIdx = idx + 1;
+        titleRef.current.textContent =
+          frac === 0 ? "LATENT CORE · STANDBY"
+          : frac < 1  ? `FORWARD PASS · FRAME ${frameIdx}/${TOTAL_FRAMES}`
+          :              "CONVERGENCE · 100% OPTIMIZED";
+      }
+      if (lossRef.current) {
+        lossRef.current.textContent = `LOSS: ${(0.048 / (1 + frac * 3.8)).toFixed(4)}`;
+      }
+
+      // Scroll hint opacity
+      if (scrollHintRef.current) {
+        scrollHintRef.current.style.opacity = String(Math.max(1 - frac * 5, 0));
       }
     };
 
     window.addEventListener("scroll", update, { passive: true });
     update();
-    return () => window.removeEventListener("scroll", update);
-  }, [frames]);
-
-  const frameIdx = Math.min(Math.floor(fraction * (TOTAL_FRAMES - 1)) + 1, TOTAL_FRAMES);
-  const lossMetric = (0.048 / (1 + fraction * 3.8)).toFixed(4);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [ready]);
 
   return (
     <div className={styles.wrapper}>
@@ -84,7 +115,7 @@ export default function FrameScrubPortrait() {
       <div className={styles.circle}>
         <img
           ref={imgRef}
-          src={frames[0] || "/frames/frame_0001.jpg"}
+          src="/frames/frame_0001.jpg"
           alt="Snehin Adepu"
           className={styles.image}
           draggable={false}
@@ -148,16 +179,12 @@ export default function FrameScrubPortrait() {
       <div className={styles.telemetryBadge}>
         <div className={styles.telemetryHeader}>
           <span className={styles.telemetryDot} />
-          <span className={styles.telemetryTitle}>
-            {fraction === 0
-              ? "LATENT CORE · STANDBY"
-              : fraction < 1
-              ? `FORWARD PASS · FRAME ${frameIdx}/${TOTAL_FRAMES}`
-              : "CONVERGENCE · 100% OPTIMIZED"}
+          <span ref={titleRef} className={styles.telemetryTitle}>
+            LATENT CORE · STANDBY
           </span>
         </div>
         <div className={styles.telemetryData}>
-          <span>LOSS: {lossMetric}</span>
+          <span ref={lossRef}>LOSS: 0.0480</span>
           <span className={styles.telemetryDivider}>|</span>
           <span>DIM: 1536</span>
           <span className={styles.telemetryDivider}>|</span>
@@ -167,8 +194,9 @@ export default function FrameScrubPortrait() {
 
       {/* Initial Scroll Prompt Badge (fades out as user scrolls) */}
       <div
+        ref={scrollHintRef}
         className={styles.scrollHintBadge}
-        style={{ opacity: Math.max(1 - fraction * 5, 0) }}
+        style={{ opacity: 1 }}
         aria-hidden="true"
       >
         <span className={styles.scrollHintArrow}>↓</span>

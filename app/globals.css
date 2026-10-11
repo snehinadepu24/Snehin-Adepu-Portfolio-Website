@@ -71,7 +71,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth intentionally removed — GSAP ScrollTrigger manages
+     smooth scrolling; mixing native smooth-scroll with GSAP causes scroll jank */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   overflow-x: clip;

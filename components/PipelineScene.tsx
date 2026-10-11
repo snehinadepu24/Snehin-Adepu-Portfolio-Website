@@ -55,12 +55,14 @@ function NodeMesh({
   const color   = node.color ?? "#C45C26";
   const { viewport } = useThree();
   const isMobile = viewport.width < 7.5;
+  // Pre-allocated scratch — avoids new Vector3 allocation every frame
+  const _scaleVec = useRef(new THREE.Vector3()).current;
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
     meshRef.current.rotation.y += delta * (hovered ? 2.0 : 0.5);
     const target = hovered ? 1.2 : 1.0;
-    meshRef.current.scale.lerp(new THREE.Vector3(target, target, target), delta * 6);
+    meshRef.current.scale.lerp(_scaleVec.set(target, target, target), delta * 6);
   });
 
   const geo = () => {
