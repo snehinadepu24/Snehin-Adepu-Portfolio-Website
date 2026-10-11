@@ -1,14 +1,36 @@
 {
-  "name": "react-vite-tailwind",
+  "name": "snehin-adepu-portfolio",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
+    "geist": "^1.7.2",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.55.0",
+    "motion": "12.43.0",
+    "next": "^15.3.3",
+    "ogl": "1.0.11",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.186.1",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "vite": "7.2.4"
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/three": "^0.186.0",
+    "eslint": "^9.25.0",
+    "eslint-config-next": "^15.3.3",
+    "typescript": "^5.8.0"
   }
 }

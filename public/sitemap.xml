@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-    <url>
-        <loc>https://www.snehinadepu.me/</loc>
-        <lastmod>2026-09-01</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>1.0</priority>
-        <image:image>
-            <image:loc>https://www.snehinadepu.me/og-image.jpg</image:loc>
-            <image:title>Snehin Adepu | AI/ML Engineer and Backend Developer</image:title>
-        </image:image>
-    </url>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:geo="http://www.google.com/geo/feeds/geo/1.0">
+
+  <!-- ─── Home ─────────────────────────────────────────────── -->
+  <url>
+    <loc>https://www.snehinadepu.me/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+
+    <!-- hreflang — English (India) canonical, English international -->
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.snehinadepu.me/" />
+    <xhtml:link rel="alternate" hreflang="en"    href="https://www.snehinadepu.me/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/" />
+
+    <!-- OG / hero image -->
+    <image:image>
+      <image:loc>https://www.snehinadepu.me/og-image.jpg</image:loc>
+      <image:title>Snehin Adepu — AI/ML Engineer and Backend Developer</image:title>
+      <image:caption>Portfolio hero: Snehin Adepu, Systems Engineer in Hyderabad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.snehinadepu.me/profile.png</image:loc>
+      <image:title>Snehin Adepu — Profile Photo</image:title>
+    </image:image>
+
+    <!-- Geo (Hyderabad, Telangana, India) -->
+    <geo:geo>
+      <geo:format>kml</geo:format>
+    </geo:geo>
+  </url>
+
+  <!-- ─── Work index ───────────────────────────────────────── -->
+  <url>
+    <loc>https://www.snehinadepu.me/work</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/work" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/work" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/work" />
+  </url>
+
+  <!-- ─── Lab / Research index ─────────────────────────────── -->
+  <url>
+    <loc>https://www.snehinadepu.me/lab</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/lab" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/lab" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/lab" />
+  </url>
+
+  <!-- ─── Work case studies ────────────────────────────────── -->
+  <url>
+    <loc>https://www.snehinadepu.me/work/jansamadhan</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/work/jansamadhan" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/work/jansamadhan" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/work/jansamadhan" />
+  </url>
+
+  <url>
+    <loc>https://www.snehinadepu.me/work/monument-restoration</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/work/monument-restoration" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/work/monument-restoration" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/work/monument-restoration" />
+  </url>
+
+  <url>
+    <loc>https://www.snehinadepu.me/work/uber-rides-analysis</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/work/uber-rides-analysis" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/work/uber-rides-analysis" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/work/uber-rides-analysis" />
+  </url>
+
+  <url>
+    <loc>https://www.snehinadepu.me/work/price-feed-tracker</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+
+    <xhtml:link rel="alternate" hreflang="en-IN"    href="https://www.snehinadepu.me/work/price-feed-tracker" />
+    <xhtml:link rel="alternate" hreflang="en"       href="https://www.snehinadepu.me/work/price-feed-tracker" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.snehinadepu.me/work/price-feed-tracker" />
+  </url>
+
 </urlset>
