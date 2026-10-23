@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import { RocketLaunchProvider } from "@/components/RocketLaunchOverlay";
+import AskSnehinWidget from "@/components/AskSnehin/AskSnehinWidget";
 
 /* ── Fonts ─────────────────────────────────────────────────── */
 
@@ -243,6 +244,7 @@ export default function RootLayout({
           <Nav />
           <main id="main">{children}</main>
           <Footer />
+          <AskSnehinWidget />
         </RocketLaunchProvider>
       </body>
     </html>
