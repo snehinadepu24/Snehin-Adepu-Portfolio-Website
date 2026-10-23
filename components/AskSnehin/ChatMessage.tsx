@@ -2,6 +2,7 @@
    Ask Snehin — Chat Message
    Individual message bubble with simple Markdown rendering
    and clickable links.
+   Supports a streaming cursor indicator during typewriter playback.
    ═══════════════════════════════════════════════════════════════ */
 
 "use client";
@@ -14,6 +15,8 @@ interface ChatMessageProps {
   content: string;
   links?: { label: string; url: string }[];
   source?: string;
+  /** When true, a blinking cursor is appended to indicate ongoing streaming. */
+  isStreaming?: boolean;
 }
 
 /**
@@ -107,6 +110,7 @@ export default function ChatMessage({
   content,
   links,
   source,
+  isStreaming,
 }: ChatMessageProps) {
   const isUser = role === "user";
 
@@ -128,6 +132,12 @@ export default function ChatMessage({
       <div className={`${styles.messageBubble} ${isUser ? styles.bubbleUser : styles.bubbleAssistant}`}>
         <div className={styles.messageText}>
           {renderMessageContent(content)}
+          {/* Blinking cursor while streaming */}
+          {isStreaming && (
+            <span className={styles.streamingCursor} aria-hidden="true">
+              ▍
+            </span>
+          )}
         </div>
 
         {/* Clickable links */}
@@ -154,3 +164,4 @@ export default function ChatMessage({
     </div>
   );
 }
+

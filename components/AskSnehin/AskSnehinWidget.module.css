@@ -702,6 +702,26 @@
   }
 }
 
+/* ── Streaming Cursor ── */
+
+.streamingCursor {
+  display: inline;
+  color: var(--color-copper);
+  font-weight: 300;
+  animation: cursorBlink 0.85s ease-in-out infinite;
+  margin-left: 1px;
+  user-select: none;
+}
+
+@keyframes cursorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    INPUT AREA
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -890,7 +910,8 @@
   .suggestions,
   .fabPulse,
   .statusDot,
-  .typingDot {
+  .typingDot,
+  .streamingCursor {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }

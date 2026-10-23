@@ -3,6 +3,7 @@
    Floating "Ask Snehin" button + responsive chat panel.
    Premium glassmorphism design matching the portfolio's
    warm editorial copper/bone/ink palette.
+   Features streaming typewriter effect for assistant responses.
    ═══════════════════════════════════════════════════════════════ */
 
 "use client";
@@ -23,6 +24,8 @@ interface Message {
   links?: { label: string; url: string }[];
   source?: string;
   suggestions?: string[];
+  isStreaming?: boolean;        // true while typewriter is still running
+  streamedContent?: string;    // partially-revealed text during streaming
 }
 
 // ── Constants ────────────────────────────────────────────────
@@ -39,6 +42,26 @@ const OPENING_MESSAGE: Message = {
     "Tell me about his key projects",
   ],
 };
+
+/** Typing speed — milliseconds per character (lower = faster). */
+const CHAR_DELAY_MS = 16;
+
+/** Extra pause after punctuation for natural rhythm. */
+const PUNCTUATION_PAUSE_MS = 60;
+
+/** Characters that trigger the longer pause. */
+const PAUSE_CHARS = new Set([".", ",", "!", "?", ":", ";", "\n"]);
+
+/** Minimum time (ms) the bouncing dots stay visible — makes even instant answers feel natural. */
+const MIN_THINKING_MS = 800;
+const MAX_THINKING_MS = 1400;
+
+/** Returns a promise that resolves after a randomized "thinking" delay. */
+function thinkingDelay(): Promise<void> {
+  const duration =
+    MIN_THINKING_MS + Math.random() * (MAX_THINKING_MS - MIN_THINKING_MS);
+  return new Promise((resolve) => setTimeout(resolve, duration));
+}
 
 let messageCounter = 0;
 function nextId(): string {
@@ -58,8 +81,9 @@ export default function AskSnehinWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const streamTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom on new messages or streaming updates
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -82,6 +106,55 @@ export default function AskSnehinWidget() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
+  // Cleanup streaming timer on unmount
+  useEffect(() => {
+    return () => {
+      if (streamTimerRef.current) clearTimeout(streamTimerRef.current);
+    };
+  }, []);
+
+  // ── Typewriter Streaming ────────────────────────────────
+
+  const streamMessage = useCallback(
+    (msgId: string, fullText: string) => {
+      let charIndex = 0;
+
+      const typeNext = () => {
+        if (charIndex >= fullText.length) {
+          // Streaming complete — remove streaming flag
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === msgId
+                ? { ...m, isStreaming: false, streamedContent: undefined }
+                : m
+            )
+          );
+          return;
+        }
+
+        charIndex++;
+        const revealed = fullText.slice(0, charIndex);
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === msgId ? { ...m, streamedContent: revealed } : m
+          )
+        );
+
+        // Determine delay — pause longer on sentence-ending punctuation
+        const currentChar = fullText[charIndex - 1];
+        const delay = PAUSE_CHARS.has(currentChar)
+          ? CHAR_DELAY_MS + PUNCTUATION_PAUSE_MS
+          : CHAR_DELAY_MS;
+
+        streamTimerRef.current = setTimeout(typeNext, delay);
+      };
+
+      typeNext();
+    },
+    []
+  );
+
   // ── Send Message ─────────────────────────────────────────
 
   const sendMessage = useCallback(
@@ -90,6 +163,12 @@ export default function AskSnehinWidget() {
       if (!trimmed || isLoading) return;
 
       if (!hasInteracted) setHasInteracted(true);
+
+      // Clear any in-progress streaming
+      if (streamTimerRef.current) {
+        clearTimeout(streamTimerRef.current);
+        streamTimerRef.current = null;
+      }
 
       // Add user message
       const userMsg: Message = {
@@ -102,41 +181,59 @@ export default function AskSnehinWidget() {
       setIsLoading(true);
 
       try {
-        const response = await fetch("/api/ask-snehin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: trimmed }),
-        });
+        // Run API fetch and minimum "thinking" delay in parallel.
+        // This ensures the bouncing dots always show for a natural duration,
+        // even when the answer is instant (FAQ / semantic match).
+        const [response] = await Promise.all([
+          fetch("/api/ask-snehin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: trimmed }),
+          }),
+          thinkingDelay(),
+        ]);
 
         const data: AskSnehinResponse = await response.json();
 
+        const assistantMsgId = nextId();
         const assistantMsg: Message = {
-          id: nextId(),
+          id: assistantMsgId,
           role: "assistant",
           content: data.message,
           links: data.links,
           source: data.source,
           suggestions: data.suggestions,
+          isStreaming: true,
+          streamedContent: "",
         };
 
         setMessages((prev) => [...prev, assistantMsg]);
+        setIsLoading(false);
+
+        // Begin typewriter animation
+        streamMessage(assistantMsgId, data.message);
       } catch {
+        const errorText =
+          "Sorry, I'm having trouble connecting right now. Please try again in a moment, or reach out to Snehin directly at adepu.snehin@gmail.com";
+        const errorMsgId = nextId();
         const errorMsg: Message = {
-          id: nextId(),
+          id: errorMsgId,
           role: "assistant",
-          content:
-            "Sorry, I'm having trouble connecting right now. Please try again in a moment, or reach out to Snehin directly at adepu.snehin@gmail.com",
+          content: errorText,
           source: "fallback",
           links: [
             { label: "Email Snehin", url: "mailto:adepu.snehin@gmail.com" },
           ],
+          isStreaming: true,
+          streamedContent: "",
         };
         setMessages((prev) => [...prev, errorMsg]);
-      } finally {
         setIsLoading(false);
+
+        streamMessage(errorMsgId, errorText);
       }
     },
-    [isLoading, hasInteracted]
+    [isLoading, hasInteracted, streamMessage]
   );
 
   // ── Handle Suggested Question Click ──────────────────────
@@ -170,9 +267,8 @@ export default function AskSnehinWidget() {
     el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
   };
 
-  // Get the latest suggestions (from the last assistant message)
-  const latestSuggestions =
-    messages.filter((m) => m.role === "assistant").pop()?.suggestions || [];
+  // Check if any message is currently streaming
+  const isAnyStreaming = messages.some((m) => m.isStreaming);
 
   return (
     <>
@@ -294,29 +390,41 @@ export default function AskSnehinWidget() {
 
         {/* Messages */}
         <div className={styles.messages} role="log" aria-live="polite" aria-label="Chat messages">
-          {messages.map((msg) => (
-            <div key={msg.id}>
-              <ChatMessage
-                role={msg.role}
-                content={msg.content}
-                links={msg.links}
-                source={msg.source}
-              />
-              {/* Show suggestions after this message if it's the latest assistant message */}
-              {msg.role === "assistant" &&
-                msg.id === messages.filter((m) => m.role === "assistant").pop()?.id &&
-                msg.suggestions &&
-                msg.suggestions.length > 0 && (
-                  <SuggestedQuestions
-                    questions={msg.suggestions}
-                    onSelect={handleSuggestion}
-                    disabled={isLoading}
-                  />
-                )}
-            </div>
-          ))}
+          {messages.map((msg) => {
+            // Determine displayed text: streamed partial or full content
+            const displayContent = msg.isStreaming
+              ? (msg.streamedContent ?? "")
+              : msg.content;
 
-          {/* Loading indicator */}
+            // Only show suggestions and links after streaming is complete
+            const showExtras = !msg.isStreaming;
+
+            return (
+              <div key={msg.id}>
+                <ChatMessage
+                  role={msg.role}
+                  content={displayContent}
+                  links={showExtras ? msg.links : undefined}
+                  source={msg.source}
+                  isStreaming={msg.isStreaming}
+                />
+                {/* Show suggestions after this message if it's the latest assistant message and done streaming */}
+                {msg.role === "assistant" &&
+                  msg.id === messages.filter((m) => m.role === "assistant").pop()?.id &&
+                  showExtras &&
+                  msg.suggestions &&
+                  msg.suggestions.length > 0 && (
+                    <SuggestedQuestions
+                      questions={msg.suggestions}
+                      onSelect={handleSuggestion}
+                      disabled={isLoading || isAnyStreaming}
+                    />
+                  )}
+              </div>
+            );
+          })}
+
+          {/* Loading indicator — bouncing dots while waiting for API */}
           {isLoading && (
             <div className={`${styles.message} ${styles.messageAssistant}`}>
               <div className={styles.messageAvatar} aria-hidden="true">
@@ -353,14 +461,14 @@ export default function AskSnehinWidget() {
               placeholder="Ask a question about Snehin's work..."
               rows={1}
               maxLength={500}
-              disabled={isLoading}
+              disabled={isLoading || isAnyStreaming}
               aria-label="Type your question"
               id="ask-snehin-input"
             />
             <button
               type="submit"
               className={styles.sendBtn}
-              disabled={!input.trim() || isLoading}
+              disabled={!input.trim() || isLoading || isAnyStreaming}
               aria-label="Send message"
               id="ask-snehin-send"
             >
