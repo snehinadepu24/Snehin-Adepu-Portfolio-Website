@@ -268,12 +268,35 @@ export const faqDatabase: FAQEntry[] = [
       "Current position",
     ],
     answer:
-      "Snehin is currently a **Tech Enterprise Automation Intern at Eli Lilly and Company** (Jul 2026 – Present). He's:\n\n• Developing enterprise automation solutions integrating ServiceNow with multiple enterprise data sources\n• Building an AI-powered daily summarizer that aggregates updates from Jira, GitHub, email, calendars, and internal platforms\n• Collaborating with engineering teams on scalable automation for operational efficiency",
+      "Snehin is currently a **Tech Enterprise Automation Intern at Eli Lilly and Company** (Jul 2026 – Dec 2026). The internship runs through **December 17, 2026**. He's:\n\n• Developing enterprise automation solutions integrating ServiceNow with multiple enterprise data sources\n• Building an AI-powered daily summarizer that aggregates updates from Jira, GitHub, email, calendars, and internal platforms\n• Collaborating with engineering teams on scalable automation for operational efficiency",
     relatedLinks: [
       { label: "LinkedIn", url: "https://www.linkedin.com/in/snehin-adepu-1774b928b/" },
     ],
-    relatedQuestions: ["experience-all", "experience-loomylabs", "skills-technical"],
+    relatedQuestions: ["experience-lilly-dates", "experience-all", "experience-loomylabs", "skills-technical"],
     tags: ["current", "eli-lilly", "internship", "automation"],
+  },
+  {
+    id: "experience-lilly-dates",
+    category: "experience",
+    question: "When does Snehin's Eli Lilly internship end?",
+    variants: [
+      "When does the Lilly internship end",
+      "Lilly internship duration",
+      "How long is his internship",
+      "When is his internship over",
+      "Internship end date",
+      "When does his current internship finish",
+      "How long is he at Eli Lilly",
+      "Lilly internship period",
+      "Internship timeline",
+    ],
+    answer:
+      "Snehin's internship at **Eli Lilly and Company** runs from **July 2026 through December 17, 2026** — approximately six months. He is working as a Tech Enterprise Automation Intern, developing enterprise automation solutions and AI-powered tools integrating ServiceNow with internal platforms.",
+    relatedLinks: [
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/snehin-adepu-1774b928b/" },
+    ],
+    relatedQuestions: ["experience-current", "experience-all", "skills-technical"],
+    tags: ["eli-lilly", "internship", "dates", "duration", "end", "timeline"],
   },
   {
     id: "experience-all",
@@ -288,7 +311,7 @@ export const faqDatabase: FAQEntry[] = [
       "Employment history",
     ],
     answer:
-      "Snehin has three significant internship experiences:\n\n**1. Eli Lilly and Company** (Jul 2026 – Present)\nTech Enterprise Automation Intern — Building AI-powered automation integrating ServiceNow with enterprise systems.\n\n**2. Loomylabs** (May 2025 – Nov 2025)\nAI/ML & Backend Intern — Reduced LLM inference costs by 70%+, deployed on GCP, handled 1,000+ concurrent users.\n\n**3. Alfago Research LLP** (Oct 2025 – Dec 2025)\nProject Intern — Built price feed pipeline processing 50,000+ records/day with 35% cost reduction.",
+      "Snehin has three significant internship experiences:\n\n**1. Eli Lilly and Company** (Jul 2026 – Dec 2026)\nTech Enterprise Automation Intern — Building AI-powered automation integrating ServiceNow with enterprise systems. Ends December 17, 2026.\n\n**2. Loomylabs** (May 2025 – Nov 2025)\nAI/ML & Backend Intern — Reduced LLM inference costs by 70%+, deployed on GCP, handled 1,000+ concurrent users.\n\n**3. Alfago Research LLP** (Oct 2025 – Dec 2025)\nProject Intern — Built price feed pipeline processing 50,000+ records/day with 35% cost reduction.",
     relatedQuestions: ["experience-current", "experience-loomylabs", "experience-alfago"],
     tags: ["experience", "internship", "work", "career"],
   },

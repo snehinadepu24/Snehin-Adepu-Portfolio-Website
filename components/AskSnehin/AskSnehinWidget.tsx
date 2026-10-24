@@ -132,7 +132,9 @@ export default function AskSnehinWidget() {
           return;
         }
 
-        charIndex++;
+        // Dynamically step so longer responses stream at natural reading cadence
+        const step = fullText.length > 350 ? 3 : fullText.length > 140 ? 2 : 1;
+        charIndex = Math.min(charIndex + step, fullText.length);
         const revealed = fullText.slice(0, charIndex);
 
         setMessages((prev) =>
@@ -141,9 +143,9 @@ export default function AskSnehinWidget() {
           )
         );
 
-        // Determine delay — pause longer on sentence-ending punctuation
-        const currentChar = fullText[charIndex - 1];
-        const delay = PAUSE_CHARS.has(currentChar)
+        // Determine delay — pause briefly on punctuation
+        const lastChar = revealed[revealed.length - 1];
+        const delay = PAUSE_CHARS.has(lastChar)
           ? CHAR_DELAY_MS + PUNCTUATION_PAUSE_MS
           : CHAR_DELAY_MS;
 

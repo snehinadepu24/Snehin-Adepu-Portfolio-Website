@@ -23,7 +23,7 @@ export const knowledgeBase: KnowledgeRecord[] = [
     id: "kb-profile-current",
     category: "profile",
     content:
-      "Currently a Tech Enterprise Automation Intern at Eli Lilly and Company (Jul 2026 – Present), integrating ServiceNow with enterprise data sources and building AI-powered workflow tools. Previously worked as AI/ML & Backend Intern at Loomylabs and Project Intern at Alfago Research.",
+      "Currently a Tech Enterprise Automation Intern at Eli Lilly and Company (Jul 2026 – Dec 2026). The internship runs through December 17, 2026. Integrating ServiceNow with enterprise data sources and building AI-powered workflow tools. Previously worked as AI/ML & Backend Intern at Loomylabs and Project Intern at Alfago Research.",
     tags: ["current", "status", "role"],
   },
 
@@ -115,8 +115,8 @@ export const knowledgeBase: KnowledgeRecord[] = [
     id: "kb-exp-lilly",
     category: "experience",
     content:
-      "Tech Enterprise Automation Intern at Eli Lilly and Company (Jul 2026 – Present). Developing enterprise automation solutions integrating ServiceNow and multiple enterprise data sources. Building an AI-powered daily summarizer that aggregates updates from Jira, GitHub, email, calendars, and other internal platforms. Collaborating with engineering teams on scalable automation that improves information accessibility and operational efficiency.",
-    tags: ["eli-lilly", "automation", "servicenow", "ai", "enterprise"],
+      "Tech Enterprise Automation Intern at Eli Lilly and Company (Jul 2026 – Dec 2026). The internship ends on December 17, 2026. Developing enterprise automation solutions integrating ServiceNow and multiple enterprise data sources. Building an AI-powered daily summarizer that aggregates updates from Jira, GitHub, email, calendars, and other internal platforms. Collaborating with engineering teams on scalable automation that improves information accessibility and operational efficiency.",
+    tags: ["eli-lilly", "automation", "servicenow", "ai", "enterprise", "internship-dates"],
   },
   {
     id: "kb-exp-loomylabs",

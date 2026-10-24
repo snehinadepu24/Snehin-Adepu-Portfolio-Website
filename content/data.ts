@@ -89,7 +89,7 @@ export const experience: Experience[] = [
     id: "lilly",
     role: "Tech Enterprise Automation Intern",
     company: "Eli Lilly and Company",
-    date: "Jul 2026 – Present",
+    date: "Jul 2026 – Dec 17, 2026",
     description: "Developing enterprise automation solutions integrating ServiceNow and multiple enterprise data sources. Building an AI-powered daily summarizer that aggregates updates from Jira, GitHub, email, calendars, and other internal platforms. Collaborating with engineering teams on scalable automation that improves information accessibility and operational efficiency."
   },
   {
