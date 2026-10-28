@@ -16,7 +16,7 @@ export default function WorkIndex() {
         <div className="container">
           <h1 className={styles.title}>Selected Work</h1>
           <p className={styles.subtitle}>
-            Systems, pipelines, and ML engineering.
+            AI systems, pipelines, and software engineering.
           </p>
         </div>
       </section>

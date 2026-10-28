@@ -1,4 +1,4 @@
-# Snehin Adepu | Engineering Portfolio
+# Snehin Adepu — Building AI Systems
 
 [![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)

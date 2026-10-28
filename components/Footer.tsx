@@ -40,7 +40,7 @@ export default function Footer() {
           <div className={styles.identity}>
             <p className={styles.name}>Snehin Adepu</p>
             <p className={styles.tagline}>
-              Systems Engineer · ML · Backend
+              Building AI Systems
             </p>
             <p className={styles.bio}>
               Building pipelines and systems that scale —
@@ -49,7 +49,7 @@ export default function Footer() {
             </p>
             <div className={styles.availability}>
               <span className={styles.availDot} aria-hidden="true" />
-              Open to new-grad SWE · ML · Backend roles
+              Open to SDE · AI/ML · Agentic roles
             </div>
           </div>
 

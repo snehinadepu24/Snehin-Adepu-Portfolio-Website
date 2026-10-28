@@ -31,22 +31,26 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.snehinadepu.me"),
   title: {
-    default: "Snehin Adepu — Systems Engineer",
+    default: "Snehin Adepu — Building AI Systems",
     template: "%s | Snehin Adepu",
   },
   description:
-    "Snehin Adepu — AI/ML Engineer & Backend Developer in Hyderabad. VNR VJIET. LLM, FastAPI, GCP. Reduced inference costs 70%+; 1,000+ concurrent users.",
+    "Snehin Adepu — Building AI Systems. CSE (AI & ML) student at VNR VJIET. AI/ML, agentic, and software engineering. LLM, FastAPI, GCP. Reduced inference costs 70%+; 1,000+ concurrent users.",
   keywords: [
     "Snehin Adepu",
-    "AI ML Engineer",
+    "AI Engineer",
+    "ML Engineer",
+    "Agentic Engineer",
+    "Software Engineer",
+    "SDE",
     "Backend Developer",
     "LLM optimization",
+    "RAG",
     "FastAPI",
     "GCP",
     "Vertex AI",
     "VNR VJIET",
     "Hyderabad",
-    "software engineer",
   ],
   authors: [{ name: "Snehin Adepu" }],
   creator: "Snehin Adepu",
@@ -64,9 +68,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "profile",
     url: "https://www.snehinadepu.me/",
-    title: "Snehin Adepu — Systems Engineer",
+    title: "Snehin Adepu — Building AI Systems",
     description:
-      "AI/ML Engineer & Backend Developer. LLM optimization, FastAPI, GCP. Reduced inference costs 70%+.",
+      "Snehin Adepu — Building AI Systems. AI/ML, agentic, and software engineering. LLM, FastAPI, GCP. Reduced inference costs 70%+.",
     siteName: "Snehin Adepu",
     locale: "en_IN",
     images: [
@@ -74,16 +78,16 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Snehin Adepu — AI/ML Engineer and Backend Developer",
+        alt: "Snehin Adepu — Building AI Systems",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Snehin Adepu — Systems Engineer",
+    title: "Snehin Adepu — Building AI Systems",
     description:
-      "AI/ML Engineer & Backend Developer. LLM optimization, FastAPI, GCP. Reduced inference costs 70%+.",
+      "Snehin Adepu — Building AI Systems. AI/ML, agentic, and software engineering. LLM, FastAPI, GCP. Reduced inference costs 70%+.",
     images: ["/og-image.jpg"],
   },
   icons: {
@@ -111,7 +115,7 @@ export const metadata: Metadata = {
     // ICBM format (lat, lon with space after comma — used by some crawlers)
     ICBM:            "17.3850, 78.4867",
     // DC subject / coverage — Dublin Core geographic coverage
-    "DC.subject":    "Software Engineer Hyderabad India",
+    "DC.subject":    "AI Engineer Software Engineer Hyderabad India",
     "DC.coverage":   "Hyderabad, Telangana, India",
     // ── Misc ────────────────────────────────────────────────
     "theme-color":   "#0C0B09",
@@ -138,9 +142,9 @@ const jsonLd = {
       url: "https://www.snehinadepu.me/",
       image: "https://www.snehinadepu.me/profile.png",
       email: "mailto:adepu.snehin@gmail.com",
-      jobTitle: "AI/ML Engineer and Backend Developer",
+      jobTitle: "AI/ML Engineer and Software Engineer",
       description:
-        "AI/ML Engineer and Backend Developer in Hyderabad. CSE (AI and ML) student at VNR VJIET. Currently a Tech Enterprise Automation Intern at Eli Lilly and Company, with experience in LLM optimization, FastAPI, and GCP.",
+        "Snehin Adepu — Building AI Systems. CSE (AI and ML) student at VNR VJIET in Hyderabad. Open to SDE, AI/ML, and agentic engineering roles. Tech Enterprise Automation Intern at Eli Lilly and Company, with experience in LLM optimization, FastAPI, and GCP.",
       worksFor: {
         "@type": "Organization",
         name: "Eli Lilly and Company",
@@ -158,6 +162,9 @@ const jsonLd = {
       knowsAbout: [
         "Artificial Intelligence",
         "Machine Learning",
+        "Software Engineering",
+        "Agentic AI",
+        "Retrieval Augmented Generation",
         "FastAPI",
         "Google Cloud Platform",
         "Amazon Web Services",
@@ -183,7 +190,7 @@ const jsonLd = {
       "@type": "ProfilePage",
       "@id": "https://www.snehinadepu.me/#profilepage",
       url: "https://www.snehinadepu.me/",
-      name: "Snehin Adepu | AI/ML Engineer and Backend Developer",
+      name: "Snehin Adepu — Building AI Systems",
       isPartOf: { "@id": "https://www.snehinadepu.me/#website" },
       mainEntity: { "@id": "https://www.snehinadepu.me/#person" },
       about: { "@id": "https://www.snehinadepu.me/#person" },

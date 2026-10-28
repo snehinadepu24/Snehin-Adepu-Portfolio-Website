@@ -13,7 +13,7 @@ export const knowledgeBase: KnowledgeRecord[] = [
     id: "kb-profile-bio",
     category: "profile",
     content:
-      "Snehin Adepu is a Systems Engineer specializing in AI/ML and backend development based in Hyderabad, India. He is a CSE (AI & ML) student at VNR Vignana Jyothi Institute of Engineering and Technology with a CGPA of 8.55. His work sits at the intersection of backend systems and machine learning: building things that are fast, accurate, and built to last.",
+      "Snehin Adepu — Building AI Systems. He is a CSE (AI & ML) student at VNR Vignana Jyothi Institute of Engineering and Technology (CGPA 8.55) based in Hyderabad, India. He is targeting SDE, AI/ML, and agentic engineering roles. His work sits at the intersection of software engineering, machine learning, and production AI: building things that are fast, accurate, and built to last.",
     tags: ["bio", "introduction", "profile"],
     links: [
       { label: "Portfolio", url: "https://www.snehinadepu.me/" },

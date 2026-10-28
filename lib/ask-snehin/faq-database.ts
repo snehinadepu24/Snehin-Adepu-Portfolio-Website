@@ -24,7 +24,7 @@ export const faqDatabase: FAQEntry[] = [
       "What's your background",
     ],
     answer:
-      "Snehin Adepu is a Systems Engineer specializing in AI/ML and backend development, based in Hyderabad, India. He's currently a CSE (AI & ML) student at VNR Vignana Jyothi Institute (CGPA 8.55) and a Tech Enterprise Automation Intern at **Eli Lilly and Company**. Previously, he optimized LLM pipelines at Loomylabs (70%+ inference cost reduction) and built data ingestion systems at Alfago Research. His work spans LLM optimization, backend systems on GCP, IoT security research, and AI-powered platforms.",
+      "Snehin Adepu — Building AI Systems. He is a CSE (AI & ML) student at VNR Vignana Jyothi Institute (CGPA 8.55) in Hyderabad, India, targeting **SDE, AI/ML, and agentic engineering** roles. Currently a Tech Enterprise Automation Intern at **Eli Lilly and Company**. Previously, he optimized LLM pipelines at Loomylabs (70%+ inference cost reduction) and built data ingestion systems at Alfago Research. His work spans LLM optimization, RAG, backend systems on GCP, IoT security research, and AI-powered platforms.",
     relatedLinks: [
       { label: "LinkedIn", url: "https://www.linkedin.com/in/snehin-adepu-1774b928b/" },
       { label: "GitHub", url: "https://github.com/snehinadepu24" },
@@ -44,7 +44,7 @@ export const faqDatabase: FAQEntry[] = [
       "Location",
     ],
     answer:
-      "Snehin is based in **Hyderabad, Telangana, India** (17.38° N, 78.48° E). He's open to worldwide relocation and remote opportunities for high-impact SWE, ML, and Backend engineering roles.",
+      "Snehin is based in **Hyderabad, Telangana, India** (17.38° N, 78.48° E). He's open to worldwide relocation and remote opportunities for high-impact **SDE, AI/ML, agentic, and backend** engineering roles.",
     relatedQuestions: ["contact-email", "profile-intro"],
     tags: ["location", "hyderabad", "remote", "relocation"],
   },
@@ -480,7 +480,7 @@ export const faqDatabase: FAQEntry[] = [
       "Is he looking for a job?",
     ],
     answer:
-      "Snehin is open to **new-grad SWE, ML, and Backend engineering roles**. He's interested in positions where he can:\n\n• Work on large-scale ML/AI systems in production\n• Design and optimize backend infrastructure\n• Apply both research skills and engineering execution\n• Contribute to impactful products used by real people\n\nHe's open to worldwide relocation and remote opportunities.",
+      "Snehin is open to **new-grad SDE, AI Engineer, ML Engineer, and Agentic Engineer roles**. He's interested in positions where he can:\n\n• Build production AI systems (RAG, agents, LLM pipelines)\n• Ship software end to end — frontend, backend, and cloud\n• Design and optimize backend infrastructure\n• Apply both research skills and engineering execution\n• Contribute to impactful products used by real people\n\nHe's open to worldwide relocation and remote opportunities.",
     relatedLinks: [
       { label: "Email", url: "mailto:adepu.snehin@gmail.com" },
       { label: "LinkedIn", url: "https://www.linkedin.com/in/snehin-adepu-1774b928b/" },

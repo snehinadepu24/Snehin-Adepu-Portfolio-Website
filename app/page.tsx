@@ -220,7 +220,7 @@ export default function HomePage() {
               <div className={styles.heroContent} ref={heroContentRef}>
                 <p className={`label ${styles.heroLabel}`}>
                   <span className={styles.statusDot} aria-hidden="true" />
-                  Systems Engineer · ML · Backend
+                  Building AI Systems
                 </p>
                 <h1 className={styles.headline}>
                   <span className={styles.headlineLine}>Snehin</span>
