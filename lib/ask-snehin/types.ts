@@ -55,7 +55,7 @@ export interface KnowledgeRecord {
 
 export type MessageRole = "user" | "assistant" | "system";
 
-export type MessageSource = "faq" | "semantic" | "gemini" | "fallback";
+export type MessageSource = "faq" | "semantic" | "gemini" | "fallback" | "guardrail";
 
 export interface ChatMessage {
   id: string;
@@ -80,6 +80,8 @@ export type IntentType =
   | "RECRUITER"
   | "CAREER_FIT"
   | "LEADERSHIP"
+  | "MODEL_INFO"
+  | "OUT_OF_SCOPE"
   | "GENERAL";
 
 export interface IntentResult {

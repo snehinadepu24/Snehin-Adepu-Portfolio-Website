@@ -247,8 +247,10 @@ function cosineSimilarity(
 // ── Public API ───────────────────────────────────────────────
 
 /** Confidence thresholds */
-const CONFIDENT_MATCH = 0.40;  // TF-IDF scores tend to be lower than embedding scores
-const POSSIBLE_MATCH = 0.20;
+const CONFIDENT_MATCH = 0.50;
+const POSSIBLE_MATCH = 0.28;
+
+const DOMAIN_NAME_TOKENS = new Set(["snehin", "adepu"]);
 
 /**
  * Search FAQs by semantic similarity.
@@ -257,11 +259,39 @@ const POSSIBLE_MATCH = 0.20;
 export function semanticSearch(query: string, topK: number = 5): SemanticMatch[] {
   buildIndex();
 
+  const queryTokens = tokenize(query);
   const queryVec = queryToVector(query);
   const scores = new Map<string, { score: number; question: string }>();
 
+  if (queryTokens.length === 0) return [];
+
+  const nonNameTokens = queryTokens.filter((t) => !DOMAIN_NAME_TOKENS.has(t));
+
   for (const doc of documentVectors!) {
-    const score = cosineSimilarity(queryVec, doc);
+    let score = cosineSimilarity(queryVec, doc);
+    if (score <= 0) continue;
+
+    // Check token overlap
+    let matchedTokenCount = 0;
+    let onlyMatchedName = true;
+
+    for (const token of queryTokens) {
+      if (doc.vector.has(token)) {
+        matchedTokenCount++;
+        if (!DOMAIN_NAME_TOKENS.has(token)) {
+          onlyMatchedName = false;
+        }
+      }
+    }
+
+    // Penalize when a query contains specific content words but only matches generic name tokens
+    if (nonNameTokens.length > 0 && onlyMatchedName) {
+      score *= 0.15;
+    } else if (queryTokens.length > 1) {
+      // Scale by coverage so a match on 1 of 4 words doesn't look like an exact match
+      const coverage = matchedTokenCount / queryTokens.length;
+      score = score * (0.4 + 0.6 * coverage);
+    }
 
     // Keep the best score for each FAQ ID
     const existing = scores.get(doc.faqId);

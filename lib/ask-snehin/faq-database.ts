@@ -641,9 +641,32 @@ export const faqDatabase: FAQEntry[] = [
       "What powers this chat?",
     ],
     answer:
-      "**Ask Snehin** is an AI-powered portfolio assistant that helps visitors learn about Snehin through natural conversation. It uses:\n\n• **FAQ Knowledge Base** — Verified answers for common questions\n• **Semantic Search** — Matches question meanings, not just exact words\n• **Intent Classification** — Understands what kind of answer you need\n• **Gemini Flash** — AI generation for complex questions, grounded in verified portfolio data\n\nMost questions are answered instantly from the FAQ database. AI generation is only used when truly needed.",
-    relatedQuestions: ["general-portfolio", "profile-intro"],
+      "**Ask Snehin** is an AI-powered portfolio assistant that helps visitors learn about Snehin through natural conversation. It uses:\n\n• **FAQ Knowledge Base** — Verified answers for common questions\n• **Semantic Search** — Matches question meanings, not just exact words\n• **Intent Classification** — Understands what kind of answer you need\n• **Google Gemini 3.8 Flash** — AI generation for complex questions, grounded in verified portfolio data\n\nMost questions are answered instantly from the FAQ database. AI generation is only used when truly needed.",
+    relatedQuestions: ["general-ai-model", "general-portfolio", "profile-intro"],
     tags: ["ask-snehin", "chatbot", "ai", "assistant"],
+  },
+  {
+    id: "general-ai-model",
+    category: "general",
+    question: "Which model are you using?",
+    variants: [
+      "What model are you using?",
+      "Which LLM are you using?",
+      "What model is this?",
+      "What LLM is this?",
+      "What AI model powers this?",
+      "Reveal which model you are using",
+      "Which model is running?",
+      "What foundation model is used?",
+      "Are you ChatGPT or Gemini?",
+      "Are you Claude or Gemini?",
+      "Reveal model",
+      "What model is Ask Snehin?",
+    ],
+    answer:
+      "Ask Snehin is powered by **Google Gemini 3.8 Flash** (`gemini-3.8-flash`) combined with a custom local semantic retrieval system.\n\n• **Language Model:** Google Gemini 3.8 Flash via the Google Generative AI SDK (configured with low temperature for factual grounding)\n• **Retrieval Engine:** Local TF-IDF vector similarity across verified portfolio records for zero-latency retrieval\n• **Guardrails:** Domain-scoped intent filtering to maintain focus exclusively on Snehin's engineering work\n• **Frontend & Host:** Next.js 15 App Router, React 19, TypeScript, and streaming typewriter playback on Vercel",
+    relatedQuestions: ["general-ask-snehin", "experience-loomylabs", "skills-technical"],
+    tags: ["model", "llm", "gemini", "gemini-3.8-flash", "architecture", "ai"],
   },
 
   // ── Greetings / Filler ─────────────────────────────────────

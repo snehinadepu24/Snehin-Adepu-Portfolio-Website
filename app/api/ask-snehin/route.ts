@@ -13,6 +13,7 @@ import { classifyIntent } from "@/lib/ask-snehin/intent-classifier";
 import { getKnowledgeByCategories, getKnowledgeByTags } from "@/lib/ask-snehin/knowledge-base";
 import { callGemini } from "@/lib/ask-snehin/gemini-client";
 import { checkRateLimit, validateInput, fallbackResponses } from "@/lib/ask-snehin/rate-limiter";
+import { checkGuardrails } from "@/lib/ask-snehin/guardrails";
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -78,7 +79,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const query = validation.sanitized;
 
-  // 3. Try exact FAQ match
+  // 3. Guardrail check (personal info, off-topic queries, model disclosure)
+  const guardrail = checkGuardrails(query);
+  if (guardrail.triggered && guardrail.message) {
+    return jsonResponse({
+      success: true,
+      message: guardrail.message,
+      source: guardrail.type === "model_disclosure" ? "faq" : "guardrail",
+      suggestions: guardrail.suggestions,
+      links: guardrail.links,
+    });
+  }
+
+  // 4. Try exact FAQ match
   const exactMatch = exactMatchFAQ(query);
   if (exactMatch) {
     const suggestions = getFollowUpSuggestions(exactMatch.relatedQuestions);
@@ -91,7 +104,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // 4. Try semantic FAQ match
+  // 5. Try semantic FAQ match
   const semanticResult = findBestMatch(query);
 
   if (semanticResult.confidence === "high" && semanticResult.faq) {
@@ -105,8 +118,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // 5. Medium confidence — still return the FAQ but note it might not be perfect
-  if (semanticResult.confidence === "medium" && semanticResult.faq) {
+  // Medium confidence — only return if score is sufficiently strong (>= 0.38)
+  if (semanticResult.confidence === "medium" && semanticResult.faq && semanticResult.score >= 0.38) {
     const suggestions = getFollowUpSuggestions(semanticResult.faq.relatedQuestions);
     return jsonResponse({
       success: true,
@@ -117,7 +130,47 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // 6. No FAQ match — need Gemini. Check Gemini rate limit.
+  // 6. Classify intent before calling Gemini
+  const intent = classifyIntent(query);
+
+  // If detected intent is OUT_OF_SCOPE, politely decline without consuming Gemini budget
+  if (intent.primary === "OUT_OF_SCOPE") {
+    return jsonResponse({
+      success: true,
+      message:
+        "I don't have access to information regarding Snehin's personal life . I am designed specifically to assist with questions about his professional background, software & ML engineering projects, technical skills, and verified contact details.",
+      source: "guardrail",
+      links: [
+        { label: "Email Snehin", url: "mailto:adepu.snehin@gmail.com" },
+        { label: "LinkedIn", url: "https://www.linkedin.com/in/snehin-adepu-1774b928b/" },
+        { label: "GitHub", url: "https://github.com/snehinadepu24" },
+      ],
+      suggestions: [
+        "What are Snehin's technical skills?",
+        "Tell me about his internships",
+        "What are his best projects?",
+      ],
+    });
+  }
+
+  // If detected intent is MODEL_INFO, return model disclosure immediately
+  if (intent.primary === "MODEL_INFO") {
+    const modelFaq = getFAQById("general-ai-model");
+    if (modelFaq) {
+      return jsonResponse({
+        success: true,
+        message: modelFaq.answer,
+        source: "faq",
+        suggestions: [
+          "Tell me about Snehin's LLM work at Loomylabs",
+          "What are his technical skills?",
+          "What projects has he built?",
+        ],
+      });
+    }
+  }
+
+  // 7. No FAQ match — need Gemini. Check Gemini rate limit.
   const geminiLimit = checkRateLimit(ip, "gemini");
   if (!geminiLimit.allowed) {
     // Return a useful fallback instead of an error
@@ -137,9 +190,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ],
     });
   }
-
-  // 7. Classify intent
-  const intent = classifyIntent(query);
 
   // 8. Retrieve relevant knowledge (always include contact links for complete grounding)
   const contactFacts = getKnowledgeByCategories(["links"]);

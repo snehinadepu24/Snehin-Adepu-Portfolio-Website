@@ -26,6 +26,13 @@ export const knowledgeBase: KnowledgeRecord[] = [
       "Currently a Tech Enterprise Automation Intern at Eli Lilly and Company (Jul 2026 – Dec 2026). The internship runs through December 17, 2026. Integrating ServiceNow with enterprise data sources and building AI-powered workflow tools. Previously worked as AI/ML & Backend Intern at Loomylabs and Project Intern at Alfago Research.",
     tags: ["current", "status", "role"],
   },
+  {
+    id: "kb-profile-ai-model",
+    category: "profile",
+    content:
+      "Ask Snehin AI Assistant: Powered by Google Gemini 3.8 Flash (gemini-3.8-flash) combined with a custom local TF-IDF vector retrieval engine. Operates with temperature 0.3 for high factual accuracy, sub-second latency for common portfolio queries, and strict domain guardrails focused strictly on Snehin's engineering work.",
+    tags: ["model", "llm", "gemini", "gemini-3.8-flash", "ask-snehin", "ai", "architecture"],
+  },
 
   // ── Education ──────────────────────────────────────────────
 

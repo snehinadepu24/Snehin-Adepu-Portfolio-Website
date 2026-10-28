@@ -134,6 +134,36 @@ const intentPatterns: IntentPattern[] = [
     detailLevel: "standard",
   },
   {
+    intent: "MODEL_INFO",
+    keywords: [
+      "model", "llm", "gemini", "gpt", "claude", "llama", "deepseek",
+      "architecture", "parameters", "engine", "ai",
+    ],
+    phrases: [
+      "what model", "which model", "what llm", "which llm", "what ai",
+      "what model are you using", "which model are you using", "reveal which model",
+      "what model is this", "what powers this", "are you chatgpt", "are you gemini",
+    ],
+    knowledgeTopics: ["profile"],
+    responseStyle: "technical",
+    detailLevel: "standard",
+  },
+  {
+    intent: "OUT_OF_SCOPE",
+    keywords: [
+      "married", "marry", "marriage", "wedding", "wife", "husband",
+      "girlfriend", "boyfriend", "dating", "religion", "caste", "recipe",
+      "weather", "horoscope", "salary", "wealth", "kids", "children",
+    ],
+    phrases: [
+      "get married", "when will", "getting married", "who is his girlfriend",
+      "is snehin married", "who is his wife", "when will snehin get married",
+    ],
+    knowledgeTopics: ["profile"],
+    responseStyle: "concise",
+    detailLevel: "brief",
+  },
+  {
     intent: "GENERAL",
     keywords: [
       "contact", "email", "linkedin", "linkdin", "connect", "reach",
